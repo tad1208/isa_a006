@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>External Email Template</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        
+        .email-container {
+            max-width: 650px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .email-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .header-section {
+            padding: 30px;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .logo-container {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+        
+        .client-logo {
+            height: 45px;
+            filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.1));
+            transition: transform 0.3s ease;
+        }
+        
+        .client-logo:hover {
+            transform: scale(1.05);
+        }
+        
+        .greeting {
+            font-size: 28px;
+            font-weight: 300;
+            color: #2d3748;
+            margin: 0;
+            letter-spacing: 0.5px;
+            position: relative;
+            padding-left: 20px;
+        }
+        
+        .greeting::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 2px;
+        }
+        
+        .content-section {
+            padding: 40px 30px;
+            line-height: 1.7;
+        }
+        
+        .message-content {
+            font-size: 16px;
+            color: #4a5568;
+            margin-bottom: 30px;
+            padding: 25px;
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            position: relative;
+        }
+        
+        .message-content::before {
+            content: "💬";
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            background: #f7fafc;
+            padding: 0 10px;
+            font-size: 20px;
+        }
+        
+        .appreciation-section {
+            background: linear-gradient(135deg, #e6fffa 0%, #b2f5ea 100%);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 25px 0;
+            border-left: 4px solid #38b2ac;
+            font-size: 16px;
+            color: #2d3748;
+            font-weight: 500;
+        }
+        
+        .company-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 25px 0;
+            padding: 15px;
+            background: linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 100%);
+            border-radius: 8px;
+        }
+        
+        .company-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        .company-link:hover {
+            color: #764ba2;
+        }
+        
+        .separator {
+            height: 1px;
+            background: linear-gradient(90deg, transparent 0%, #e2e8f0 50%, transparent 100%);
+            margin: 30px 0;
+        }
+        
+        .footer-notice {
+            background: linear-gradient(135deg, #fef5e7 0%, #fed7aa 100%);
+            border: 1px solid #f59e0b;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 25px 0;
+            color: #92400e;
+            font-size: 14px;
+            line-height: 1.5;
+            position: relative;
+        }
+        
+        .footer-notice::before {
+            content: "⚠️";
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            background: #fef5e7;
+            padding: 0 10px;
+            font-size: 18px;
+        }
+        
+        .footer-notice strong {
+            color: #78350f;
+        }
+        
+        /* Responsive design */
+        @media (max-width: 600px) {
+            .email-container {
+                margin: 10px;
+                border-radius: 8px;
+            }
+            
+            .header-section,
+            .content-section {
+                padding: 20px;
+            }
+            
+            .greeting {
+                font-size: 24px;
+            }
+            
+            .message-content {
+                padding: 20px;
+            }
+            
+            .company-info {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="header-section">
+            <div class="logo-container">
+                <img src="" alt="client_logo" class="client-logo">
+            </div>
+            <h1 class="greeting">Greetings,</h1>
+        </div>
+        
+        <div class="content-section">
+            <div class="message-content">
+                {0}
+            </div>
+            
+            <div class="appreciation-section">
+                As always, <strong>COMPANY</strong> appreciates your business and ongoing support!
+            </div>
+            
+            <div class="company-info">
+                <span>Client.com | <a href="http://www.client.com/" class="company-link">www.client.com</a></span>
+            </div>
+            
+            <div class="separator"></div>
+            
+            <div class="footer-notice">
+                <strong>Please note:</strong> This e-mail was sent from a notification-only address that cannot accept incoming e-mail. Please do not reply to this message.
+            </div>
+        </div>
+    </div>
+</body>
+</html>

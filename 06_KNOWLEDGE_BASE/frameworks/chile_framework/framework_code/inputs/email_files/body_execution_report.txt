@@ -1,0 +1,60 @@
+<!-- Mensaje de éxito con badge -->
+<div style="text-align: center; margin-bottom: 25px;">
+    <span style="display: inline-block; background-color: #10b981; color: white; font-weight: 600; font-size: 20px; padding: 8px 20px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px;">
+        ✓ Proceso completado
+    </span>
+</div>
+
+<!-- Mensaje principal con borde -->
+<div style="border-left: 4px solid #3b82f6; background-color: #eff6ff; padding: 20px; margin-bottom: 25px; border-radius: 0 8px 8px 0;">
+    <div style="color: #1e40af; font-size: 18px; font-weight: 500; line-height: 1.6;">
+        La ejecución del proceso <strong style="color: #1e40af;">{0}</strong> ha terminado correctamente.
+    </div>
+</div>
+
+<!-- Sección del resumen -->
+<div style="margin-bottom: 25px;">
+    <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
+        <tr>
+            <td style="width: 30px; vertical-align: middle; padding: 0; margin: 0;">
+                <span style="font-size: 20px;">📊</span>
+            </td>
+            <td style="vertical-align: middle; padding: 0; margin: 0;">
+                <h3 style="margin: 0; color: #1e40af; font-size: 20px; font-weight: 600;">Resumen de la ejecución</h3>
+            </td>
+        </tr>
+    </table>
+    
+    <!-- Aquí va la tabla HTML generada -->
+    <div style="margin: 20px 0;">
+        {1}
+    </div>
+</div>
+
+<!-- Sección de comentarios extras -->
+<!-- Descomentar el siguiente div y modificar ejemplo si se quiere agregar información extra-->
+<!--
+<div style="background-color: #ecfdf5; border: 1px solid #d1fae5; border-radius: 8px; padding: 20px; margin-bottom: 25px;">
+        <div style="display: flex; align-items: center; margin-bottom: 12px;">
+            <span style="font-size: 20px; margin-right: 8px;">📁</span>
+            <h3 style="margin: 0; color: #059669; font-size: 18px; font-weight: 600;">Archivos generados:</h3>
+        </div>
+        <div style="color: #065f46; font-size: 14px; line-height: 1.6;">
+        Ingresa a la carpeta de <a href="https://iplacex.sharepoint.com/:f:/s/Cobranzas-Inigo/ErXCB7f_js1OiFz8FzZcvmgB7fzZcZ5JFgkKtTbCFf0hUA?e=ClEFbe" style="color: #3b82f6; text-decoration: none; font-weight: 500;">Pago de estudiantes</a> para revisar los archivos generados en esta ejecución.
+        </div>
+</div>
+-->
+
+<!-- Nota sobre adjuntos -->
+<div style="background-color: #fef3c7; border: 1px solid #fcd34d; border-radius: 8px; padding: 15px; margin-bottom: 20px;">
+    <table style="width: 100%; border-collapse: collapse;">
+        <tr>
+            <td style="width: 30px; vertical-align: middle; padding: 0; margin: 0;">
+                <span style="font-size: 28px;">📎</span>
+            </td>
+            <td style="vertical-align: middle; color: #92400e; font-size: 16px; font-weight: 500; padding: 0; margin: 0;">
+                Favor de revisar archivo(s) adjunto(s) para mayor información.
+            </td>
+        </tr>
+    </table>
+</div>

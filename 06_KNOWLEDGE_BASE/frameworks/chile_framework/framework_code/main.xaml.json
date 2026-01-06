@@ -1,0 +1,57 @@
+{
+  "DisplayName": "main",
+  "Tooltip": null,
+  "HelpLink": null,
+  "Color": null,
+  "OriginalIconFileName": null,
+  "Arguments": [
+    {
+      "Name": "_intRobotState",
+      "DisplayName": "_intRobotState",
+      "Category": null,
+      "Tooltip": "0 or empty: delete process_data\nElse: keep process_data",
+      "Placeholder": "0",
+      "Widget": null,
+      "IsRequired": false,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "_intFinalState",
+      "DisplayName": "_intFinalState",
+      "Category": null,
+      "Tooltip": "Default: empty or 0",
+      "Placeholder": "0",
+      "Widget": null,
+      "IsRequired": false,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "_boolSendToClient",
+      "DisplayName": "_boolSendToClient",
+      "Category": null,
+      "Tooltip": "False: remove all recipients without @sisuadigital.com",
+      "Placeholder": null,
+      "Widget": null,
+      "IsRequired": false,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "_intExecutionDayOffset",
+      "DisplayName": "_intExecutionDayOffset",
+      "Category": null,
+      "Tooltip": "Default: 0. Always negative value",
+      "Placeholder": "0",
+      "Widget": null,
+      "IsRequired": false,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    }
+  ]
+}

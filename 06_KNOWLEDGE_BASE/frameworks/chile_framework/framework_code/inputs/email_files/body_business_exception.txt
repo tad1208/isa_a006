@@ -1,0 +1,65 @@
+<!-- Badge de regla de negocio -->
+<div style="text-align: center; margin-bottom: 25px;">
+    <span style="display: inline-block; background-color: #f59e0b; color: white; font-weight: 600; font-size: 20px; padding: 8px 20px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px;">
+        📋 Excepción de negocio
+    </span>
+</div>
+
+<!-- Mensaje principal -->
+<div style="border-left: 4px solid #f59e0b; background-color: #fffbeb; padding: 20px; margin-bottom: 25px; border-radius: 0 8px 8px 0;">
+    <div style="color: #92400e; font-size: 18px; font-weight: 500; line-height: 1.6;">
+        La ejecución del proceso <strong style="color: #92400e;">{0}</strong> se detuvo debido a una excepción de regla de negocio.
+    </div>
+</div>
+
+<!-- Detalle de la excepción -->
+<div style="background-color: #fef3c7; border: 1px solid #fcd34d; border-radius: 8px; padding: 20px; margin-bottom: 25px;">
+    <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
+        <tr>
+            <td style="width: 30px; vertical-align: middle; padding: 0; margin: 0;">
+                <span style="font-size: 18px;">⚡</span>
+            </td>
+            <td style="vertical-align: middle; padding: 0; margin: 0;">
+                <h3 style="margin: 0; color: #d97706; font-size: 20px; font-weight: 600;">Excepción encontrada</h3>
+            </td>
+        </tr>
+    </table>
+    
+    <div style="background-color: #fbbf24; color: #451a03; padding: 15px; border-radius: 6px; font-weight: 500; font-size: 16px; border: 1px solid #f59e0b;">
+        {1}
+    </div>
+</div>
+           
+<!-- Información contextual -->
+<div style="background-color: #f0f9ff; border: 1px solid #bae6fd; border-radius: 8px; padding: 20px; margin-bottom: 25px;">
+    <table style="width: 100%; border-collapse: collapse; margin-bottom: 12px;">
+        <tr>
+            <td style="width: 30px; vertical-align: middle; padding: 0; margin: 0;">
+                <span style="font-size: 20px;">💡</span>
+            </td>
+            <td style="vertical-align: middle; padding: 0; margin: 0;">
+                <h3 style="margin: 0; color: #0369a1; font-size: 20px; font-weight: 600;">¿Qué significa esto?</h3>
+            </td>
+        </tr>
+    </table>
+    <div style="color: #0c4a6e; font-size: 16px; line-height: 1.6;">
+        • La ejecución del proceso no pudo continuar debido a una regla de negocio establecida
+    </div>
+</div>
+
+<!-- Acción requerida -->
+<div style="background-color: #ecfdf5; border: 1px solid #d1fae5; border-radius: 8px; padding: 20px; margin-bottom: 20px;">
+    <table style="width: 100%; border-collapse: collapse; margin-bottom: 12px;">
+        <tr>
+            <td style="width: 30px; vertical-align: middle; padding: 0; margin: 0;">
+                <span style="font-size: 18px;">✅</span>
+            </td>
+            <td style="vertical-align: middle; padding: 0; margin: 0;">
+                <h3 style="margin: 0; color: #059669; font-size: 20px; font-weight: 600;">Acción requerida</h3>
+            </td>
+        </tr>
+    </table>
+    <div style="color: #065f46; font-size: 16px; line-height: 1.6;">
+        Revisar el mensaje de excepción encontrada y, de ser necesario, gestionar las acciones correspondientes.
+    </div>
+</div>
