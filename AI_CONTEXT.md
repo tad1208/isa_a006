@@ -66,4 +66,11 @@ Kiến thức tham khảo và framework.
 *   **`references/`**: Tài liệu tham khảo kỹ thuật.
 *   **`faqs/`**: Các vấn đề thường gặp và giải pháp.
 
+### 📦 07_CODES (External Reference)
+Nơi chứa Source Code tham khảo được copy từ máy local vào.
+*   **Mục đích**: Để AI đọc hiểu project structure và logic cũ.
+*   **QUY TẮC BẤT DI BẤT DỊCH**: Folder này là **READ-ONLY**.
+    *   AI **TUYỆT ĐỐI KHÔNG** được chỉnh sửa, ghi đè bất kỳ file nào trong folder này.
+    *   Chỉ được phép đọc nội dung để trả lời câu hỏi hoặc suggestion.
+
 

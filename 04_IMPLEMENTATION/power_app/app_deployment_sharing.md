@@ -20,6 +20,13 @@ Người dùng chỉ thấy các thay đổi khi bạn **Publish**.
 
 > **Mẹo**: Nếu khách hàng báo lỗi, bạn sửa xong phải nhớ Publish lại thì họ mới thấy bản sửa lỗi.
 
+### Cách kiểm tra bản nào đang Live (Đã Publish thành công)
+Để chắc chắn bản mới nhất đã đến tay người dùng:
+1. Vào `make.powerapps.com` -> **Apps**.
+2. Chọn dấu `...` cạnh App -> **Details**.
+3. Chọn tab **Versions**.
+4. Kiểm tra dòng có trạng thái **Live**. Nếu thời gian trùng khớp với lúc bạn vừa Publish thì đã thành công.
+
 ## 3. Quy trình "Share" (Chia sẻ App)
 
 1.  Vào trang danh sách Apps (make.powerapps.com).
