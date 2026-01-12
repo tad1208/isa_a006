@@ -1,0 +1,53 @@
+{
+  "Components": [
+    {
+      "Name": "cmpHeaderButton",
+      "TemplateName": "3f05af38727a4366a136c316468a3a27",
+      "Description": "",
+      "AllowCustomization": true,
+      "AllowAccessToGlobals": false
+    },
+    {
+      "Name": "cmpPrimaryButton",
+      "TemplateName": "9994fa20b0dd47a7bcba6e410d8bb8fe",
+      "Description": "",
+      "AllowCustomization": true,
+      "AllowAccessToGlobals": false
+    },
+    {
+      "Name": "cmpSecondaryButton",
+      "TemplateName": "01d737c9986748dd96b4c6ec73412ed8",
+      "Description": "",
+      "AllowCustomization": true,
+      "AllowAccessToGlobals": false
+    },
+    {
+      "Name": "cmpSectionTitle",
+      "TemplateName": "5cfdb42f39a745c2b51fe5c73348ecc3",
+      "Description": "",
+      "AllowCustomization": true,
+      "AllowAccessToGlobals": false
+    },
+    {
+      "Name": "cmpSubCriteria",
+      "TemplateName": "8284fd0151da474994c02d3de8b312c0",
+      "Description": "",
+      "AllowCustomization": true,
+      "AllowAccessToGlobals": false
+    },
+    {
+      "Name": "cmpObservationBox",
+      "TemplateName": "67c953e4ada6443cabf3c76d136f2e22",
+      "Description": "",
+      "AllowCustomization": true,
+      "AllowAccessToGlobals": false
+    },
+    {
+      "Name": "cmpYesNoQuestion",
+      "TemplateName": "3876650198b64f9aa0344d4fd815ef88",
+      "Description": "",
+      "AllowCustomization": true,
+      "AllowAccessToGlobals": false
+    }
+  ]
+}

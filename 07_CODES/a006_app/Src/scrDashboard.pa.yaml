@@ -1,0 +1,478 @@
+# ************************************************************************************************
+# Warning: YAML source code for Canvas Apps should only be used to review changes made within Power Apps Studio and for minor edits (Preview).
+# Use the maker portal to create and edit your Power Apps.
+# 
+# The schema file for Canvas Apps is available at https://go.microsoft.com/fwlink/?linkid=2304907
+# 
+# For more information, visit https://go.microsoft.com/fwlink/?linkid=2292623
+# ************************************************************************************************
+Screens:
+  scrDashboard:
+    Properties:
+      LoadingSpinnerColor: =RGBA(56, 96, 178, 1)
+      OnVisible: |-
+        =Refresh(ongoingEvaluations);
+        ClearCollect(colDashboard, ongoingEvaluations)
+    Children:
+      - conDashboard:
+          Control: GroupContainer@1.3.0
+          Variant: AutoLayout
+          Properties:
+            Height: =Parent.Height - conHeader_3.Height
+            LayoutAlignItems: =LayoutAlignItems.Center
+            LayoutDirection: =LayoutDirection.Vertical
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            Visible: =varViewDashboard
+            Width: =Parent.Width
+            Y: =conHeader_3.Height
+          Children:
+            - conFilters:
+                Control: GroupContainer@1.3.0
+                Variant: AutoLayout
+                Properties:
+                  FillPortions: =0
+                  Height: =50
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  PaddingBottom: =8
+                  PaddingLeft: =8
+                  PaddingRight: =8
+                  PaddingTop: =8
+                  RadiusBottomLeft: =0
+                  RadiusBottomRight: =0
+                  RadiusTopLeft: =0
+                  RadiusTopRight: =0
+                  Width: =Parent.Width
+                  Y: =conHeader_3.Height
+                Children:
+                  - lblSearch:
+                      Control: Label@2.5.1
+                      Properties:
+                        BorderColor: =RGBA(0, 18, 107, 1)
+                        Color: =ColorValue("#003087")
+                        Font: =Font.'Open Sans'
+                        LayoutMaxHeight: =0
+                        LayoutMaxWidth: =0
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        Text: ="Search:"
+                        Width: =70
+                  - txtSearch:
+                      Control: TextInput@0.0.54
+                      Properties:
+                        BorderColor: =ColorValue("#003087")
+                        BorderThickness: =1
+                        FontSize: =15
+                        Height: =40
+                        LayoutMaxHeight: =0
+                        LayoutMaxWidth: =0
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        TriggerOutput: ='TextInputCanvas.TriggerOutput'.Keypress
+            - conGridHeader:
+                Control: GroupContainer@1.3.0
+                Variant: AutoLayout
+                Properties:
+                  Fill: =ColorValue("#003087")
+                  FillPortions: =0
+                  Height: =50
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutGap: =5
+                  PaddingBottom: =8
+                  PaddingLeft: =8
+                  PaddingRight: =8
+                  PaddingTop: =8
+                  RadiusBottomLeft: =0
+                  RadiusBottomRight: =0
+                  RadiusTopLeft: =0
+                  RadiusTopRight: =0
+                  Width: =Parent.Width
+                  X: =40
+                  Y: =40
+                Children:
+                  - lblDocumento:
+                      Control: Label@2.5.1
+                      Properties:
+                        BorderColor: =RGBA(0, 18, 107, 1)
+                        Color: =Color.White
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Semibold
+                        LayoutMaxHeight: =0
+                        LayoutMaxWidth: =0
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        Text: ="Documento"
+                        Width: =120
+                  - lblFecha:
+                      Control: Label@2.5.1
+                      Properties:
+                        BorderColor: =RGBA(0, 18, 107, 1)
+                        Color: =Color.White
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Semibold
+                        LayoutMaxHeight: =0
+                        LayoutMaxWidth: =0
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        Text: ="Fecha"
+                        Width: =110
+                  - lblSociedad:
+                      Control: Label@2.5.1
+                      Properties:
+                        BorderColor: =RGBA(0, 18, 107, 1)
+                        Color: =Color.White
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Semibold
+                        LayoutMaxHeight: =0
+                        LayoutMaxWidth: =0
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        Text: ="Sociedad"
+                        Width: =100
+                  - lblProveedor:
+                      Control: Label@2.5.1
+                      Properties:
+                        BorderColor: =RGBA(0, 18, 107, 1)
+                        Color: =Color.White
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Semibold
+                        LayoutMaxHeight: =0
+                        LayoutMaxWidth: =0
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        Text: ="Proveedor"
+                        Width: =320
+                  - lblTecnicoSub:
+                      Control: Label@2.5.1
+                      Properties:
+                        BorderColor: =RGBA(0, 18, 107, 1)
+                        Color: =Color.White
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Semibold
+                        LayoutMaxHeight: =0
+                        LayoutMaxWidth: =0
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        Text: ="Tecnico Sub."
+                        Width: =120
+                  - lblSSTSub:
+                      Control: Label@2.5.1
+                      Properties:
+                        BorderColor: =RGBA(0, 18, 107, 1)
+                        Color: =Color.White
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Semibold
+                        LayoutMaxHeight: =0
+                        LayoutMaxWidth: =0
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        Text: ="SST Sub."
+                        Width: =80
+                  - lblMASub:
+                      Control: Label@2.5.1
+                      Properties:
+                        BorderColor: =RGBA(0, 18, 107, 1)
+                        Color: =Color.White
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Semibold
+                        LayoutMaxHeight: =0
+                        LayoutMaxWidth: =0
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        Text: ="MA Sub."
+                        Width: =80
+                  - lblApproval:
+                      Control: Label@2.5.1
+                      Properties:
+                        BorderColor: =RGBA(0, 18, 107, 1)
+                        Color: =Color.White
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Semibold
+                        LayoutMaxHeight: =0
+                        LayoutMaxWidth: =0
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        Text: ="Aprobación"
+                        Width: =120
+                  - lblTecnicoSigned:
+                      Control: Label@2.5.1
+                      Properties:
+                        BorderColor: =RGBA(0, 18, 107, 1)
+                        Color: =Color.White
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Semibold
+                        LayoutMaxHeight: =0
+                        LayoutMaxWidth: =0
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        Text: ="Firma Técnico"
+                  - lblJefeSigned:
+                      Control: Label@2.5.1
+                      Properties:
+                        BorderColor: =RGBA(0, 18, 107, 1)
+                        Color: =Color.White
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Semibold
+                        LayoutMaxHeight: =0
+                        LayoutMaxWidth: =0
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        Text: ="Firma Jefe"
+                        Width: =100
+            - galDashboard:
+                Control: Gallery@2.15.0
+                Variant: Vertical
+                Properties:
+                  BorderColor: =RGBA(0, 18, 107, 1)
+                  FillPortions: =0
+                  Height: =Parent.Height - conFilters.Height - conGridHeader.Height
+                  Items: =Search(colDashboard, txtSearch.Value, Title, nombre_proveedor, documento_compras)
+                  TemplatePadding: =0
+                  TemplateSize: =60
+                  Width: =Parent.Width
+                  Y: =conHeader_3.Height + conFilters.Height
+                Children:
+                  - conItem:
+                      Control: GroupContainer@1.3.0
+                      Variant: AutoLayout
+                      Properties:
+                        Height: =60
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutGap: =conGridHeader.LayoutGap
+                        PaddingBottom: =8
+                        PaddingLeft: =8
+                        PaddingRight: =8
+                        PaddingTop: =8
+                        Width: =Parent.Width
+                      Children:
+                        - lblDocumento_1:
+                            Control: Label@2.5.1
+                            Properties:
+                              AutoHeight: =true
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              Color: =Color.DarkBlue
+                              Font: =Font.'Open Sans'
+                              LayoutMaxHeight: =0
+                              LayoutMaxWidth: =0
+                              LayoutMinHeight: =16
+                              LayoutMinWidth: =16
+                              Text: =ThisItem.documento_compras
+                              Width: =lblDocumento.Width
+                        - lblFecha_1:
+                            Control: Label@2.5.1
+                            Properties:
+                              AutoHeight: =true
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              Color: =Color.DarkBlue
+                              Font: =Font.'Open Sans'
+                              LayoutMaxHeight: =0
+                              LayoutMaxWidth: =0
+                              LayoutMinHeight: =16
+                              LayoutMinWidth: =16
+                              Text: =Text(ThisItem.fecha_evaluacion, "dd/mm/yyyy")
+                              Width: =lblFecha.Width
+                        - lblSociedad_1:
+                            Control: Label@2.5.1
+                            Properties:
+                              AutoHeight: =true
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              Color: =Color.DarkBlue
+                              Font: =Font.'Open Sans'
+                              LayoutMaxHeight: =0
+                              LayoutMaxWidth: =0
+                              LayoutMinHeight: =16
+                              LayoutMinWidth: =16
+                              Text: =ThisItem.sociedad
+                              Width: =lblSociedad.Width
+                        - lblProveedor_1:
+                            Control: Label@2.5.1
+                            Properties:
+                              AutoHeight: =true
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              Color: =Color.DarkBlue
+                              Font: =Font.'Open Sans'
+                              LayoutMaxHeight: =0
+                              LayoutMaxWidth: =0
+                              LayoutMinHeight: =16
+                              LayoutMinWidth: =16
+                              Text: =ThisItem.nombre_proveedor
+                              Width: =lblProveedor.Width
+                        - lblTecnicoSub_1:
+                            Control: Label@2.5.1
+                            Properties:
+                              Align: =Align.Center
+                              AutoHeight: =true
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              Color: =If(ThisItem.tecnico_submitted, Color.Green, Color.LightGray)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Bold
+                              LayoutMaxHeight: =0
+                              LayoutMaxWidth: =0
+                              LayoutMinHeight: =16
+                              LayoutMinWidth: =16
+                              Size: =15
+                              Text: =If(ThisItem.tecnico_submitted, "✓", "-")
+                              Width: =lblTecnicoSub.Width
+                        - lblSSTSub_1:
+                            Control: Label@2.5.1
+                            Properties:
+                              Align: =Align.Center
+                              AutoHeight: =true
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              Color: =If(ThisItem.sst_submitted, Color.Green, Color.LightGray)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Bold
+                              LayoutMaxHeight: =0
+                              LayoutMaxWidth: =0
+                              LayoutMinHeight: =16
+                              LayoutMinWidth: =16
+                              Size: =15
+                              Text: =If(ThisItem.sst_submitted, "✓", "-")
+                              Width: =lblSSTSub.Width
+                        - lblMASub_1:
+                            Control: Label@2.5.1
+                            Properties:
+                              Align: =Align.Center
+                              AutoHeight: =true
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              Color: =If(ThisItem.ma_submitted, Color.Green, Color.LightGray)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Bold
+                              LayoutMaxHeight: =0
+                              LayoutMaxWidth: =0
+                              LayoutMinHeight: =16
+                              LayoutMinWidth: =16
+                              Size: =15
+                              Text: =If(ThisItem.ma_submitted, "✓", "-")
+                              Width: =lblMASub.Width
+                        - lblApproval_1:
+                            Control: Label@2.5.1
+                            Properties:
+                              AutoHeight: =true
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              Color: |-
+                                =If(ThisItem.aprobada, Color.Green, 
+                                           If(ThisItem.rechazada, Color.Red, Color.LightGray)
+                                        )
+                              Font: =Font.'Open Sans'
+                              LayoutMaxHeight: =0
+                              LayoutMaxWidth: =0
+                              LayoutMinHeight: =16
+                              LayoutMinWidth: =16
+                              Text: |-
+                                =If(ThisItem.aprobada, "APROBADO", 
+                                           If(ThisItem.rechazada, "RECHAZADO", "PENDIENTE")
+                                        )
+                              Width: =lblApproval.Width
+                        - lblTecnicoSigned_1:
+                            Control: Label@2.5.1
+                            Properties:
+                              Align: =Align.Center
+                              AutoHeight: =true
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              Color: =If(ThisItem.firma_responsable_tecnico, Color.Green, Color.LightGray)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Bold
+                              LayoutMaxHeight: =0
+                              LayoutMaxWidth: =0
+                              LayoutMinHeight: =16
+                              LayoutMinWidth: =16
+                              Size: =15
+                              Text: =If(ThisItem.firma_responsable_tecnico, "✓", "-")
+                              Width: =lblTecnicoSigned.Width
+                        - lblJefeSigned_1:
+                            Control: Label@2.5.1
+                            Properties:
+                              Align: =Align.Center
+                              AutoHeight: =true
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              Color: =If(ThisItem.firma_jefe_area, Color.Green, Color.LightGray)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Bold
+                              LayoutMaxHeight: =0
+                              LayoutMaxWidth: =0
+                              LayoutMinHeight: =16
+                              LayoutMinWidth: =16
+                              Size: =15
+                              Text: =If(ThisItem.firma_jefe_area, "✓", "-")
+                              Width: =lblJefeSigned.Width
+      - conHeader_3:
+          Control: GroupContainer@1.3.0
+          Variant: ManualLayout
+          Properties:
+            Fill: =ColorValue("#003087")
+            Height: =100
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            Width: =Parent.Width
+          Children:
+            - conHeaderContent_3:
+                Control: GroupContainer@1.3.0
+                Variant: AutoLayout
+                Properties:
+                  DropShadow: =DropShadow.None
+                  Height: =Parent.Height
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutGap: =20
+                  LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                  PaddingBottom: =8
+                  PaddingLeft: =40
+                  PaddingRight: =40
+                  PaddingTop: =8
+                  Width: =Parent.Width
+                Children:
+                  - imgLogo_3:
+                      Control: Image@2.2.3
+                      Properties:
+                        BorderColor: =RGBA(0, 18, 107, 1)
+                        Height: =150
+                        Image: =logo2
+                        Width: =150
+                        X: =60
+                  - conMenuGroup_3:
+                      Control: GroupContainer@1.3.0
+                      Variant: AutoLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutGap: =40
+                        LayoutJustifyContent: =LayoutJustifyContent.End
+                        LayoutMaxHeight: =0
+                        LayoutMaxWidth: =0
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        PaddingBottom: =8
+                        PaddingLeft: =8
+                        PaddingRight: =8
+                        PaddingTop: =8
+                        Width: =Parent.Width - imgLogo_3.Width
+                      Children:
+                        - btnEvaluateProviders_3:
+                            Control: CanvasComponent
+                            ComponentName: cmpHeaderButton
+                            Properties:
+                              Destination: =scrEvaluations
+                              Fill: =Color.Transparent
+                              Height: =80
+                              IsActive: =App.ActiveScreen = scrEvaluations
+                              Label: ="Evaluacions"
+                              Width: =180
+                        - btnDashboard_3:
+                            Control: CanvasComponent
+                            ComponentName: cmpHeaderButton
+                            Properties:
+                              Destination: =scrDashboard
+                              Fill: =Color.Transparent
+                              Height: =80
+                              IsActive: =App.ActiveScreen = scrDashboard
+                              Label: ="Dashboard"
+                              Width: =180

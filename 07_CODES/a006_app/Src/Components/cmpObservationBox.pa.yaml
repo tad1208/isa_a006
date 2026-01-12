@@ -1,0 +1,78 @@
+# ************************************************************************************************
+# Warning: YAML source code for Canvas Apps should only be used to review changes made within Power Apps Studio and for minor edits (Preview).
+# Use the maker portal to create and edit your Power Apps.
+# 
+# The schema file for Canvas Apps is available at https://go.microsoft.com/fwlink/?linkid=2304907
+# 
+# For more information, visit https://go.microsoft.com/fwlink/?linkid=2292623
+# ************************************************************************************************
+ComponentDefinitions:
+  cmpObservationBox:
+    DefinitionType: CanvasComponent
+    CustomProperties:
+      Default:
+        PropertyKind: Input
+        DisplayName: Default
+        Description: A custom property
+        DataType: Text
+        Default: =""
+      Enable:
+        PropertyKind: Input
+        DisplayName: Enable
+        Description: A custom property
+        DataType: Boolean
+        Default: =true
+      LabelText:
+        PropertyKind: Input
+        DisplayName: LabelText
+        Description: A custom property
+        DataType: Text
+        Default: ="observation"
+      Value:
+        PropertyKind: Output
+        DisplayName: Value
+        Description: A custom property
+        DataType: Text
+    Properties:
+      Height: =200
+      OnReset: =Reset(txtInput)
+      Value: =txtInput.Text
+      Width: =600
+    Children:
+      - txtInput:
+          Control: Classic/TextInput@2.3.2
+          Properties:
+            BorderColor: =ColorValue("#003087")
+            Color: =ColorValue("#003087")
+            Default: =Parent.Default
+            DisabledBorderColor: =ColorValue("#003087")
+            DisabledColor: =ColorValue("#003087")
+            DisplayMode: =If(cmpObservationBox.Enable, DisplayMode.Edit, DisplayMode.Disabled)
+            Fill: =RGBA(0, 0, 0, 0)
+            FocusedBorderThickness: =2
+            Font: =Font.'Segoe UI'
+            Height: =Parent.Height - txtInput.Y
+            HintText: =
+            HoverBorderColor: =RGBA(0, 18, 107, 1)
+            HoverFill: =ColorFade(RGBA(186, 202, 226, 1),85%)
+            MaxLength: =500
+            Mode: =TextMode.MultiLine
+            PaddingBottom: =8
+            PaddingRight: =8
+            PaddingTop: =8
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            Width: =Parent.Width
+            Y: =lblObservationLabel.Y + lblObservationLabel.Height + 4
+      - lblObservationLabel:
+          Control: Label@2.5.1
+          Properties:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            Color: =ColorValue("#003087")
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Bold
+            Size: =18
+            Text: =Parent.LabelText
+            Width: =Parent.Width

@@ -1,0 +1,52 @@
+{
+  "Resources": [
+    {
+      "Name": "SampleImage",
+      "Schema": "i",
+      "IsSampleData": true,
+      "IsWritable": false,
+      "Type": "ResourceInfo",
+      "FileName": "/ctrllib/image/images/SampleImage.svg",
+      "Path": "/ctrllib/image/images/SampleImage.svg",
+      "Content": "Image",
+      "ResourceKind": "Uri",
+      "RootPath": "ms-appx:///ctrllib/image/images/SampleImage.svg"
+    },
+    {
+      "Name": "isa_logo",
+      "Schema": "i",
+      "IsSampleData": false,
+      "IsWritable": false,
+      "Type": "ResourceInfo",
+      "FileName": "f5f0fd84-50e4-421c-8e40-533b6ff3f51a.png",
+      "Path": "Assets\\Images\\f5f0fd84-50e4-421c-8e40-533b6ff3f51a.png",
+      "Content": "Image",
+      "ResourceKind": "LocalFile",
+      "RootPath": "https://dsprdil109wus.blob.core.windows.net/adad0c1c-8b48-4999-a6f4-2b37701d8fa2-1/resource/ZjVmMGZkODQtNTBlNC00MjFjLThlNDAtNTMzYjZmZjNmNTFh.png?skoid=58690ece-ec83-4ce2-9ce8-883d4d6a54ee&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-01-09T06%3A02%3A39Z&ske=2026-01-10T06%3A17%3A39Z&sks=b&skv=2023-01-03&sv=2023-01-03&spr=https&se=2026-01-10T06%3A17%3A39Z&sr=b&sp=r&sig=OuorKMRYjxbBnp3iuu8Y%2FFnwFSu99wmu0XyBh1ee0Gw%3D"
+    },
+    {
+      "Name": "logo",
+      "Schema": "i",
+      "IsSampleData": false,
+      "IsWritable": false,
+      "Type": "ResourceInfo",
+      "FileName": "61fb1c4a-08f7-4c1a-bac4-64fdbc57cdea.png",
+      "Path": "Assets\\Images\\61fb1c4a-08f7-4c1a-bac4-64fdbc57cdea.png",
+      "Content": "Image",
+      "ResourceKind": "LocalFile",
+      "RootPath": "https://dsprdil109wus.blob.core.windows.net/adad0c1c-8b48-4999-a6f4-2b37701d8fa2-1/resource/NjFmYjFjNGEtMDhmNy00YzFhLWJhYzQtNjRmZGJjNTdjZGVh.png?skoid=58690ece-ec83-4ce2-9ce8-883d4d6a54ee&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-01-09T06%3A02%3A39Z&ske=2026-01-10T06%3A17%3A39Z&sks=b&skv=2023-01-03&sv=2023-01-03&spr=https&se=2026-01-10T06%3A17%3A39Z&sr=b&sp=r&sig=SuoYCFxuBLM9cxUeqzW63ExUV2fW1%2B2nyBtRPtZ4QRM%3D"
+    },
+    {
+      "Name": "logo2",
+      "Schema": "i",
+      "IsSampleData": false,
+      "IsWritable": false,
+      "Type": "ResourceInfo",
+      "FileName": "b45cd482-df5a-4a25-972e-b587e438d235.png",
+      "Path": "Assets\\Images\\b45cd482-df5a-4a25-972e-b587e438d235.png",
+      "Content": "Image",
+      "ResourceKind": "LocalFile",
+      "RootPath": "https://dsprdil109wus.blob.core.windows.net/adad0c1c-8b48-4999-a6f4-2b37701d8fa2-1/resource/YjQ1Y2Q0ODItZGY1YS00YTI1LTk3MmUtYjU4N2U0MzhkMjM1.png?skoid=58690ece-ec83-4ce2-9ce8-883d4d6a54ee&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-01-09T06%3A02%3A39Z&ske=2026-01-10T06%3A17%3A39Z&sks=b&skv=2023-01-03&sv=2023-01-03&spr=https&se=2026-01-10T06%3A17%3A39Z&sr=b&sp=r&sig=2xjwk1ipSGFh0XJekbuRwsi%2BEwiYsUgjwqOZljCV%2FhM%3D"
+    }
+  ]
+}

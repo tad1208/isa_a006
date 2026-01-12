@@ -1,0 +1,2801 @@
+# ************************************************************************************************
+# Warning: YAML source code for Canvas Apps should only be used to review changes made within Power Apps Studio and for minor edits (Preview).
+# Use the maker portal to create and edit your Power Apps.
+# 
+# The schema file for Canvas Apps is available at https://go.microsoft.com/fwlink/?linkid=2304907
+# 
+# For more information, visit https://go.microsoft.com/fwlink/?linkid=2292623
+# ************************************************************************************************
+Screens:
+  scrEvaluations:
+    Properties:
+      LoadingSpinner: =LoadingSpinner.Data
+      LoadingSpinnerColor: =RGBA(56, 96, 178, 1)
+      OnVisible: |-
+        =// scrEvaluateProviders.OnVisible
+        Set(varUserEmail, gblUserEmail);
+        Set(varSelectedEvaluation, Blank());
+        Select(btnClearCollection);
+        Reset(cbbSelectEvaluation);
+        Set(varShowSubmitModal, false);
+        Set(varSubmitSummary, Blank());
+        Set(varSelectedTocQId, "");
+
+        /*
+        ClearCollect(
+            colToc,
+            { QId:"CalidadQ1", Title:"Calidad Q1", SortOrder: 10, IsVisible: true },
+            { QId:"CalidadQ2", Title:"Calidad Q2", SortOrder: 20, IsVisible: true },
+            { QId:"CalidadQ3", Title:"Calidad Q3", SortOrder: 30, IsVisible: true },
+            { QId:"CalidadQ4", Title:"Calidad Q4", SortOrder: 40, IsVisible: true },
+            { QId:"CalidadQ5", Title:"Calidad Q5", SortOrder: 50, IsVisible: true },
+
+            { QId:"OportunidadQ1", Title:"Oportunidad Q1", SortOrder: 60, IsVisible: true },
+            { QId:"GestionQ1", Title:"Gestion Q1", SortOrder: 70, IsVisible: true },
+            { QId:"GestionQ2", Title:"Gestion Q2", SortOrder: 80, IsVisible: true },
+
+            { QId:"CodigoEtica", Title:"Código de Ética", SortOrder: 90, IsVisible: true },
+            { QId:"MedioAmbienteYN", Title:"Medio Ambiente", SortOrder: 100, IsVisible: true },
+
+            { QId:"SSTQ1", Title:"SST Q1", SortOrder: 110, IsVisible: true },
+            { QId:"MAQ1", Title:"MA Q1", SortOrder: 120, IsVisible: true }
+        );*/
+    Children:
+      - conFunctions:
+          Control: GroupContainer@1.3.0
+          Variant: ManualLayout
+          Properties:
+            Height: =0
+            Visible: =false
+            Width: =0
+          Children:
+            - btnBuildToc:
+                Control: Classic/Button@2.2.0
+                Properties:
+                  BorderColor: =ColorFade(Self.Fill, -15%)
+                  Color: =RGBA(255, 255, 255, 1)
+                  DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                  Fill: =RGBA(56, 96, 178, 1)
+                  Font: =Font.'Open Sans'
+                  HoverBorderColor: =ColorFade(Self.BorderColor, 20%)
+                  HoverColor: =RGBA(255, 255, 255, 1)
+                  HoverFill: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+                  OnSelect: |
+                    =
+                    ClearCollect(
+                        colToc,
+                        { QId:"CalidadQ1", Title:"Calidad Q1", SortOrder: 10, IsVisible: varCanEditTecnico || varCanApprove },
+                        { QId:"CalidadQ2", Title:"Calidad Q2", SortOrder: 20, IsVisible: varCanEditTecnico || varCanApprove },
+                        { QId:"CalidadQ3", Title:"Calidad Q3", SortOrder: 30, IsVisible: varCanEditTecnico || varCanApprove },
+                        { QId:"CalidadQ4", Title:"Calidad Q4", SortOrder: 40, IsVisible: varCanEditTecnico|| varCanApprove  },
+                        { QId:"CalidadQ5", Title:"Calidad Q5", SortOrder: 50, IsVisible: varCanEditTecnico || varCanApprove },
+                        { QId:"OportunidadQ1", Title:"Oportunidad Q1", SortOrder: 60, IsVisible: varCanEditTecnico || varCanApprove },
+                        { QId:"GestionQ1", Title:"Gestion Q1", SortOrder: 70, IsVisible: varCanEditTecnico || varCanApprove },
+                        { QId:"GestionQ2", Title:"Gestion Q2", SortOrder: 80, IsVisible: varCanEditTecnico || varCanApprove },    
+                        { QId:"CodigoEtica", Title:"Código de Ética", SortOrder: 90, IsVisible: varCanEditTecnico || varCanApprove },
+                        { QId:"MedioAmbienteYN", Title:"Medio Ambiente", SortOrder: 100, IsVisible: varCanEditTecnico || varCanApprove },
+                        { QId:"ObservationTecnico", Title:"Obs Tecnico", SortOrder: 110, IsVisible: varCanEditTecnico || varCanApprove },
+
+                        { QId:"SSTQ1", Title:"SST Q1", SortOrder: 120, IsVisible: varCanEditSST || varCanApprove },
+                        { QId:"ObservationSST", Title:"Obs SST", SortOrder: 130, IsVisible: varCanEditSST || varCanApprove },
+
+                        { QId:"MAQ1", Title:"MA Q1", SortOrder: 140, IsVisible: varCanEditMA || varCanApprove },
+                        { QId:"ObservationMA", Title:"Obs MA", SortOrder: 150, IsVisible: varCanEditMA || varCanApprove },
+
+                        { QId:"ObservationJefeArea", Title:"Obs Jefe Area", SortOrder: 160, IsVisible: varCanApprove || varRechazada}
+
+                    );
+                  PressedBorderColor: =Self.Fill
+                  PressedColor: =Self.Fill
+                  PressedFill: =Self.Color
+            - btnClearCollection:
+                Control: Classic/Button@2.2.0
+                Properties:
+                  BorderColor: =ColorFade(Self.Fill, -15%)
+                  Color: =RGBA(255, 255, 255, 1)
+                  DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                  Fill: =RGBA(56, 96, 178, 1)
+                  Font: =Font.'Open Sans'
+                  HoverBorderColor: =ColorFade(Self.BorderColor, 20%)
+                  HoverColor: =RGBA(255, 255, 255, 1)
+                  HoverFill: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+                  OnSelect: |-
+                    =Clear(colEvaluations);
+                    Collect(
+                        colEvaluations,
+                        // 1. Técnico
+                        Filter(
+                            ongoingEvaluations,
+                            email_responsable_tecnico = varUserEmail &&
+                            tecnico_submitted = false
+                        ),
+                        // 2. SST
+                        Filter(
+                            ongoingEvaluations,
+                            email_responsable_sst = varUserEmail &&
+                            responsable_sst_responde = true &&
+                            sst_submitted = false
+                        ),
+                        // 3. MA
+                        Filter(
+                            ongoingEvaluations,
+                            email_responsable_ma = varUserEmail &&
+                            responsable_ma_responde = true &&
+                            ma_submitted = false
+                        ),
+                        // 4. Approver
+                        Filter(
+                            ongoingEvaluations,
+                            email_jefe_area = varUserEmail &&
+                            aprobada = false &&
+                            tecnico_submitted = true &&
+                            sst_submitted = true && 
+                            ma_submitted = true        
+                        )
+                    );
+                  PressedBorderColor: =Self.Fill
+                  PressedColor: =Self.Fill
+                  PressedFill: =Self.Color
+            - btnDoSubmit:
+                Control: Classic/Button@2.2.0
+                Properties:
+                  BorderColor: =ColorFade(Self.Fill, -15%)
+                  Color: =RGBA(255, 255, 255, 1)
+                  DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                  Fill: =RGBA(56, 96, 178, 1)
+                  Font: =Font.'Open Sans'
+                  HoverBorderColor: =ColorFade(Self.BorderColor, 20%)
+                  HoverColor: =RGBA(255, 255, 255, 1)
+                  HoverFill: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+                  OnSelect: |-
+                    =// Patch dữ liệu về SharePoint
+                    Patch(
+                        ongoingEvaluations,
+                        varSelectedEvaluation,
+                        {
+                            puntaje_subtotal: If(lblSubtotalValue.Text = "-", Blank(), Value(lblSubtotalValue.Text))
+                        },
+                        If(varCanEditTecnico, {
+                            calidad_pregunta_1:	Value(cmpCalidadQ1.SelectedIndex),	
+                            calidad_pregunta_2:	Value(cmpCalidadQ2.SelectedIndex),		
+                            calidad_pregunta_3:	Value(cmpCalidadQ3.SelectedIndex),		
+                            calidad_pregunta_4:	Value(cmpCalidadQ4.SelectedIndex),		
+                            calidad_pregunta_5: Value(cmpCalidadQ5.SelectedIndex),
+                            oportunidad_pregunta_1:	Value(cmpOportunidadQ1.SelectedIndex),	
+                            gestion_pregunta_1:	Value(cmpGestionQ1.SelectedIndex),	
+                            gestion_pregunta_2:	Value(cmpGestionQ2.SelectedIndex),
+                            cumple_codigo_etica: varEtica,
+                            responsable_ma_responde: varMA,
+                            observaciones_tecnico: cmpObservationTecnico.Value,
+                            tecnico_submitted: true
+                        }, {}),
+                        If(varCanEditSST, {
+                            sst_pregunta_1:	Value(cmpSST.SelectedIndex),	
+                            observaciones_sst: cmpObservationSST.Value,	
+                            sst_submitted: true
+                        }, {}),
+                        If(varCanEditMA, {
+                            ma_pregunta_1:	Value(cmpMA.SelectedIndex),
+                            observaciones_ma: cmpObservationMA.Value,   
+                            ma_submitted: true
+                        }, {})
+                    );
+                    // Thông báo thành công
+                    Notify("Evaluación guardada correctamente", NotificationType.Success);
+                    // Refresh data
+                    Select(btnClearCollection);
+                    // Reset selection (tuỳ chọn)
+                    Set(varSelectedEvaluation, Blank());
+                  PressedBorderColor: =Self.Fill
+                  PressedColor: =Self.Fill
+                  PressedFill: =Self.Color
+            - btnDoApprove:
+                Control: Classic/Button@2.2.0
+                Properties:
+                  BorderColor: =ColorFade(Self.Fill, -15%)
+                  Color: =RGBA(255, 255, 255, 1)
+                  DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                  Fill: =RGBA(56, 96, 178, 1)
+                  Font: =Font.'Open Sans'
+                  HoverBorderColor: =ColorFade(Self.BorderColor, 20%)
+                  HoverColor: =RGBA(255, 255, 255, 1)
+                  HoverFill: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+                  OnSelect: |-
+                    =// Patch data to SharePoint
+                    Patch(
+                        ongoingEvaluations,
+                        varSelectedEvaluation,
+                        If(varCanApprove, {
+                            aprobada: true,
+                            rechazada: false,
+                            observaciones_jefe_area: cmpObservationJefeArea.Value       
+                        }, {})    
+                    );
+                    // Notification
+                    Notify("Evaluation approved", NotificationType.Success);
+                    // Refresh data
+                    Select(btnClearCollection);
+                    // Reset selection (tuỳ chọn)
+                    Set(varSelectedEvaluation, Blank());
+                  PressedBorderColor: =Self.Fill
+                  PressedColor: =Self.Fill
+                  PressedFill: =Self.Color
+            - btnDoReject:
+                Control: Classic/Button@2.2.0
+                Properties:
+                  BorderColor: =ColorFade(Self.Fill, -15%)
+                  Color: =RGBA(255, 255, 255, 1)
+                  DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                  Fill: =RGBA(56, 96, 178, 1)
+                  Font: =Font.'Open Sans'
+                  HoverBorderColor: =ColorFade(Self.BorderColor, 20%)
+                  HoverColor: =RGBA(255, 255, 255, 1)
+                  HoverFill: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+                  OnSelect: |-
+                    =// Patch data to SharePoint
+                    Patch(
+                        ongoingEvaluations,
+                        varSelectedEvaluation,
+                        If(varCanApprove, {
+                            tecnico_submitted: false,
+                            sst_submitted: false,
+                            ma_submitted: false,
+                            aprobada: false,
+                            rechazada: true,
+                            observaciones_jefe_area: cmpObservationJefeArea.Value,       
+                            numero_rechazos: varNumeroRechazos + 1
+                        }, {})    
+                    );
+                    // Notification
+                    Notify("Evaluation rejected", NotificationType.Success);
+                    // Refresh data
+                    Select(btnClearCollection);
+                    // Reset selection (tuỳ chọn)
+                    Set(varSelectedEvaluation, Blank());
+                  PressedBorderColor: =Self.Fill
+                  PressedColor: =Self.Fill
+                  PressedFill: =Self.Color
+      - conFooter:
+          Control: GroupContainer@1.3.0
+          Variant: AutoLayout
+          Properties:
+            DropShadow: =DropShadow.None
+            Height: =60
+            LayoutAlignItems: =LayoutAlignItems.Center
+            LayoutDirection: =LayoutDirection.Horizontal
+            LayoutGap: =12
+            LayoutJustifyContent: =LayoutJustifyContent.End
+            PaddingBottom: =8
+            PaddingLeft: =8
+            PaddingRight: =40
+            PaddingTop: =8
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            Visible: =!IsBlank(varSelectedEvaluation)
+            Width: =Parent.Width
+            Y: =Parent.Height - Self.Height
+          Children:
+            - cmpReject:
+                Control: CanvasComponent
+                ComponentName: cmpSecondaryButton
+                Properties:
+                  Fill: =Color.Transparent
+                  Height: =48
+                  IsEnabled: |-
+                    =// Button rechaza - IsEnabled
+                    true
+                  OnSelectAction: |+
+                    =If(
+                        IsBlank(Trim(Coalesce(cmpObservationJefeArea.Value, ""))),
+                        Notify(
+                            "Por favor, ingrese una observación antes de rechazar.",
+                            NotificationType.Warning
+                        ),
+                        Set(
+                            varSubmitSummary,
+                            {
+                                //
+                                Action:"reject",
+                                // Common
+                                SubtotalText: lblSubtotalValue.Text,
+                                TotalText: lblTotalValue.Text,
+                                // Role flags
+                                IsTecnico: varCanEditTecnico,
+                                IsSST: varCanEditSST,
+                                IsMA: varCanEditMA,
+                                // Tecnico (example - adjust control names đúng theo app)
+                                CalidadQ1: Text(cmpCalidadQ1.Score) & "/" & Text(cmpCalidadQ1.TotalPoints),
+                                CalidadQ2: Text(cmpCalidadQ2.Score) & "/" & Text(cmpCalidadQ2.TotalPoints),
+                                CalidadQ3: Text(cmpCalidadQ3.Score) & "/" & Text(cmpCalidadQ3.TotalPoints),
+                                CalidadQ4: Text(cmpCalidadQ4.Score) & "/" & Text(cmpCalidadQ4.TotalPoints),
+                                CalidadQ5: Text(cmpCalidadQ5.Score) & "/" & Text(cmpCalidadQ5.TotalPoints),
+                                OportunidadQ1: Text(cmpOportunidadQ1.Score) & "/" & Text(cmpOportunidadQ1.TotalPoints),
+                                GestionQ1: Text(cmpGestionQ1.Score) & "/" & Text(cmpGestionQ1.TotalPoints),
+                                GestionQ2: Text(cmpGestionQ2.Score) & "/" & Text(cmpGestionQ2.TotalPoints),
+                                // if you have these variables already
+                                EticaFlag: If(varEtica, "Si", "No"),
+                                MARequiredFlag: If(varMA, "Si", "No"),
+                                // SST / MA
+                                SSTQ1: Text(cmpSST.Score) & "/" & Text(cmpSST.TotalPoints),
+                                MAQ1: Text(cmpMA.Score) & "/" & Text(cmpMA.TotalPoints),
+                                // Observations
+                                ObsTecnico: cmpObservationTecnico.Value,
+                                ObsSST: cmpObservationSST.Value,
+                                ObsMA: cmpObservationMA.Value,
+                                ObsJefeArea: cmpObservationJefeArea.Value
+                            }
+                        );
+                        Set(varShowSubmitModal, true)
+                    )
+
+                  Text: ="Rechazar"
+                  ToolTip: |-
+                    =If(
+                        IsBlank(Trim(cmpObservationJefeArea.Value)),
+                        "Por favor, ingrese una observación antes de rechazar.",
+                        ""
+                    )
+                  Visible: =varCanApprove
+                  Width: =220
+            - cmpApprove:
+                Control: CanvasComponent
+                ComponentName: cmpPrimaryButton
+                Properties:
+                  Fill: =Color.Transparent
+                  Height: =48
+                  IsEnabled: =true
+                  OnSelectAction: |-
+                    =Set(
+                        varSubmitSummary,
+                        {
+                            //
+                            Action:"approve",
+                            // Common
+                            SubtotalText: lblSubtotalValue.Text,
+                            TotalText: lblTotalValue.Text,
+                            // Role flags
+                            IsTecnico: varCanEditTecnico,
+                            IsSST: varCanEditSST,
+                            IsMA: varCanEditMA,
+                            // Tecnico (example - adjust control names đúng theo app)
+                            CalidadQ1: Text(cmpCalidadQ1.Score) & "/" & Text(cmpCalidadQ1.TotalPoints),
+                            CalidadQ2: Text(cmpCalidadQ2.Score) & "/" & Text(cmpCalidadQ2.TotalPoints),
+                            CalidadQ3: Text(cmpCalidadQ3.Score) & "/" & Text(cmpCalidadQ3.TotalPoints),
+                            CalidadQ4: Text(cmpCalidadQ4.Score) & "/" & Text(cmpCalidadQ4.TotalPoints),
+                            CalidadQ5: Text(cmpCalidadQ5.Score) & "/" & Text(cmpCalidadQ5.TotalPoints),
+                            OportunidadQ1: Text(cmpOportunidadQ1.Score) & "/" & Text(cmpOportunidadQ1.TotalPoints),
+                            GestionQ1: Text(cmpGestionQ1.Score) & "/" & Text(cmpGestionQ1.TotalPoints),
+                            GestionQ2: Text(cmpGestionQ2.Score) & "/" & Text(cmpGestionQ2.TotalPoints),
+                            // if you have these variables already
+                            EticaFlag: If(varEtica, "Si", "No"),
+                            MARequiredFlag: If(varMA, "Si", "No"),
+                            // SST / MA
+                            SSTQ1: Text(cmpSST.Score) & "/" & Text(cmpSST.TotalPoints),
+                            MAQ1: Text(cmpMA.Score) & "/" & Text(cmpMA.TotalPoints),
+                            // Observations
+                            ObsTecnico: cmpObservationTecnico.Value,
+                            ObsSST: cmpObservationSST.Value,
+                            ObsMA: cmpObservationMA.Value,
+                            ObsJefeArea: cmpObservationJefeArea.Value
+                        }
+                    );
+                    Set(varShowSubmitModal, true);
+                  Text: ="Aprobar"
+                  ToolTip: =""
+                  Visible: =varCanApprove
+                  Width: =220
+            - cmpReset:
+                Control: CanvasComponent
+                ComponentName: cmpSecondaryButton
+                Properties:
+                  Fill: =Color.Transparent
+                  Height: =48
+                  IsEnabled: =true
+                  OnSelectAction: |
+                    =// 1. Reset Técnico Data
+                    If(varCanEditTecnico,
+                        Set(varCalidadQ1Selected, 0); // Calidad 1
+                        Set(varCalidadQ2Selected, 0);
+                        Set(varCalidadQ3Selected, 0);
+                        Set(varCalidadQ4Selected, 0);
+                        Set(varCalidadQ5Selected, 0);
+                        Set(varOportunidadQ1Selected, 0); // Oportunidad
+                        Set(varGestionQ1Selected, 0); // Gestion 1
+                        Set(varGestionQ2Selected, 0); // Gestion 2
+                        Set(varEtica, false);    
+                        Set(varMA, varSelectedEvaluation.responsable_ma_responde); // Revert to original flag
+                        Set(varObservationTecnico, "")
+                    );
+                    // 2. Reset SST Data
+                    If(varCanEditSST,
+                        Set(varSSTQ1Selected, 0); 
+                        Set(varObservationSST, "")
+                    );
+                    // 3. Reset MA Data
+                    If(varCanEditMA,
+                        Set(varMAQ1Selected, 0);
+                        Set(varObservationMA, "")
+                    );
+                    // Refresh data
+                    Select(btnClearCollection);
+                    // Reset selection (tuỳ chọn)
+                    // Set(varSelectedEvaluation, Blank());
+                  Text: ="Limpiar"
+                  ToolTip: =""
+                  Visible: =varCanEditMA || varCanEditSST || varCanEditTecnico
+                  Width: =220
+            - cmpSubmit:
+                Control: CanvasComponent
+                ComponentName: cmpPrimaryButton
+                Properties:
+                  Fill: =Color.Transparent
+                  Height: =48
+                  IsEnabled: |-
+                    =// Button Enviar - IsEnabled
+                    // Técnico validation
+                    If(varCanEditTecnico,
+                        Value(cmpCalidadQ1.SelectedIndex) > 0 &&
+                        Value(cmpCalidadQ2.SelectedIndex) > 0 &&
+                        Value(cmpCalidadQ3.SelectedIndex) > 0 &&
+                        Value(cmpCalidadQ4.SelectedIndex) > 0 &&
+                        Value(cmpCalidadQ5.SelectedIndex) > 0 &&
+                        Value(cmpOportunidadQ1.SelectedIndex) > 0 &&
+                        Value(cmpGestionQ1.SelectedIndex) > 0 &&
+                        Value(cmpGestionQ2.SelectedIndex) > 0,
+                        true
+                    ) &&
+                    // SST validation
+                    If(varCanEditSST,
+                        Value(cmpSST.SelectedIndex) > 0,
+                        true
+                    ) &&
+                    // MA validation
+                    If(varCanEditMA,
+                        Value(cmpMA.SelectedIndex) > 0,
+                        true
+                    )
+                  OnSelectAction: |-
+                    =Set(
+                        varSubmitSummary,
+                        {
+                            //
+                            Action:"submit",
+                            // Common
+                            SubtotalText: lblSubtotalValue.Text,
+                            TotalText: lblTotalValue.Text,
+                            // Role flags
+                            IsTecnico: varCanEditTecnico,
+                            IsSST: varCanEditSST,
+                            IsMA: varCanEditMA,
+                            // Tecnico (example - adjust control names đúng theo app)
+                            CalidadQ1: Text(cmpCalidadQ1.Score) & "/" & Text(cmpCalidadQ1.TotalPoints),
+                            CalidadQ2: Text(cmpCalidadQ2.Score) & "/" & Text(cmpCalidadQ2.TotalPoints),
+                            CalidadQ3: Text(cmpCalidadQ3.Score) & "/" & Text(cmpCalidadQ3.TotalPoints),
+                            CalidadQ4: Text(cmpCalidadQ4.Score) & "/" & Text(cmpCalidadQ4.TotalPoints),
+                            CalidadQ5: Text(cmpCalidadQ5.Score) & "/" & Text(cmpCalidadQ5.TotalPoints),
+                            OportunidadQ1: Text(cmpOportunidadQ1.Score) & "/" & Text(cmpOportunidadQ1.TotalPoints),
+                            GestionQ1: Text(cmpGestionQ1.Score) & "/" & Text(cmpGestionQ1.TotalPoints),
+                            GestionQ2: Text(cmpGestionQ2.Score) & "/" & Text(cmpGestionQ2.TotalPoints),
+                            // if you have these variables already
+                            EticaFlag: If(varEtica, "Si", "No"),
+                            MARequiredFlag: If(varMA, "Si", "No"),
+                            // SST / MA
+                            SSTQ1: Text(cmpSST.Score) & "/" & Text(cmpSST.TotalPoints),
+                            MAQ1: Text(cmpMA.Score) & "/" & Text(cmpMA.TotalPoints),
+                            // Observations
+                            ObsTecnico: cmpObservationTecnico.Value,
+                            ObsSST: cmpObservationSST.Value,
+                            ObsMA: cmpObservationMA.Value,
+                            ObsJefeArea: cmpObservationJefeArea.Value
+                        }
+                    );
+                    Set(varShowSubmitModal, true);
+                  Text: ="Enviar"
+                  ToolTip: =""
+                  Visible: =varCanEditMA || varCanEditSST || varCanEditTecnico
+                  Width: =220
+      - conMain:
+          Control: GroupContainer@1.3.0
+          Variant: AutoLayout
+          Properties:
+            DropShadow: =DropShadow.None
+            Height: =App.Height - conHeader.Height - conFooter.Height
+            LayoutAlignItems: =LayoutAlignItems.Center
+            LayoutDirection: =LayoutDirection.Horizontal
+            PaddingBottom: =8
+            PaddingLeft: =8
+            PaddingRight: =8
+            PaddingTop: =8
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            Width: =Parent.Width
+            Y: =conHeader.Height
+          Children:
+            - conSideBar:
+                Control: GroupContainer@1.3.0
+                Variant: AutoLayout
+                Properties:
+                  BorderColor: =RGBA(225, 223, 221, 1)
+                  BorderStyle: =BorderStyle.None
+                  DropShadow: =DropShadow.None
+                  Fill: =RGBA(255, 255, 255, 1)
+                  FillPortions: =0.7
+                  Height: =
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGap: =10
+                  LayoutMaxHeight: =0
+                  LayoutMaxWidth: =0
+                  LayoutMinHeight: =16
+                  LayoutMinWidth: =16
+                  PaddingBottom: =24
+                  PaddingLeft: =10
+                  PaddingRight: =10
+                  PaddingTop: |+
+                    =13
+                Children:
+                  - cbbSelectEvaluation:
+                      Control: Classic/ComboBox@2.4.0
+                      Properties:
+                        BorderColor: =RGBA(200, 200, 200, 1)
+                        ChevronBackground: =RGBA(255, 255, 255, 1)
+                        ChevronFill: =RGBA(0, 120, 212, 1)
+                        ChevronHoverBackground: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+                        ChevronHoverFill: =RGBA(255, 255, 255, 1)
+                        DisplayFields: =["DisplayText"]
+                        Font: =Font.'Open Sans'
+                        HoverFill: =RGBA(186, 202, 226, 1)
+                        Items: |-
+                          =Sort(
+                              AddColumns(
+                                  colEvaluations,
+                                  DisplayText,
+                                      Text(fecha_evaluacion, "dd/mm/yyyy") & 
+                                      " - " & nombre_proveedor
+                              ),
+                              DisplayText,
+                              SortOrder.Ascending
+                          )
+
+                          /*
+                          AddColumns(
+                              Filter(
+                                  ongoingEvaluations, 
+                                  (
+                                      // 1. Técnico: Sees if not submitted OR if rejected (to fix)
+                                      (email_responsable_tecnico = varUserEmail && !tecnico_submitted) ||
+                                      // 2. SST: Sees ONLY if flag is TRUE and not submitted
+                                      (email_responsable_sst = varUserEmail && responsable_sst_responde && !sst_submitted) ||
+                                      // 3. MA: Sees ONLY if flag is TRUE and not submitted
+                                      (email_responsable_ma = varUserEmail && responsable_ma_responde && !ma_submitted) ||
+                                      // 4. Approver: Sees if ready for approval (All submitted & Not processed)
+                                      (email_jefe_area = varUserEmail && 
+                                          !aprobada && !rechazada &&
+                                          tecnico_submitted && sst_submitted && ma_submitted            
+                                      )
+                                  )
+                              ),
+                              DisplayText,
+                                  Text(fecha_evaluacion, "dd/mm/yyyy") & 
+                                  " - " & nombre_proveedor
+                          )
+                          */
+                        LayoutMaxHeight: =0
+                        LayoutMaxWidth: =0
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        OnChange: |+
+                          =Set(
+                              varSelectedEvaluation,
+                              LookUp(
+                                  ongoingEvaluations,
+                                  Title = Self.Selected.Title          
+                              )
+                          );
+                          // Set selected evaluation
+                          //Set(varSelectedEvaluation, Self.Selected);
+
+                          // === load value & flags from sharepoint list
+                          Set(varCalidadQ1Selected, Coalesce(varSelectedEvaluation.calidad_pregunta_1, 0));
+                          Set(varCalidadQ2Selected, Coalesce(varSelectedEvaluation.calidad_pregunta_2, 0));
+                          Set(varCalidadQ3Selected, Coalesce(varSelectedEvaluation.calidad_pregunta_3, 0));
+                          Set(varCalidadQ4Selected, Coalesce(varSelectedEvaluation.calidad_pregunta_4, 0));
+                          Set(varCalidadQ5Selected, Coalesce(varSelectedEvaluation.calidad_pregunta_5, 0));
+                          Set(varOportunidadQ1Selected, Coalesce(varSelectedEvaluation.oportunidad_pregunta_1, 0));
+                          Set(varGestionQ1Selected, Coalesce(varSelectedEvaluation.gestion_pregunta_1, 0));
+                          Set(varGestionQ2Selected, Coalesce(varSelectedEvaluation.gestion_pregunta_2, 0));
+                          Set(varSSTQ1Selected, Coalesce(varSelectedEvaluation.sst_pregunta_1, 0));
+                          Set(varMAQ1Selected, Coalesce(varSelectedEvaluation.ma_pregunta_1, 0));
+                          Set(varSST, varSelectedEvaluation.responsable_sst_responde);
+                          Set(varMA, varSelectedEvaluation.responsable_ma_responde);
+                          Set(varEtica, Coalesce(varSelectedEvaluation.cumple_codigo_etica, false));
+                          Set(varObservationTecnico, Coalesce(varSelectedEvaluation.observaciones_tecnico, ""));
+                          Set(varObservationSST, Coalesce(varSelectedEvaluation.observaciones_sst, ""));
+                          Set(varObservationMA, Coalesce(varSelectedEvaluation.observaciones_ma, ""));
+                          Set(varObservationJefeArea, Coalesce(varSelectedEvaluation.observaciones_jefe_area, ""));
+                          Set(varTecnicoSubmitted, varSelectedEvaluation.tecnico_submitted);
+                          Set(varSSTSubmitted, varSelectedEvaluation.sst_submitted);
+                          Set(varMASubmitted, varSelectedEvaluation.ma_submitted);
+                          Set(varAprobada, varSelectedEvaluation.aprobada);
+                          Set(varRechazada, varSelectedEvaluation.rechazada);
+                          Set(varNumeroRechazos, Coalesce(varSelectedEvaluation.numero_rechazos, 0));
+                          Reset(cmpObservationTecnico);
+                          Reset(cmpObservationSST);
+                          Reset(cmpObservationMA);
+                          Reset(cmpObservationJefeArea);
+
+
+                          // === PERMISSIONS LOGIC ===
+                          // 1. Técnico Permission: Email matches AND Not Submitted Yet
+                          Set(varCanEditTecnico, 
+                              varSelectedEvaluation.email_responsable_tecnico = varUserEmail &&
+                              !varTecnicoSubmitted
+                          );
+                          // 2. SST Section Permission
+                          // Logic: (Flag=True & I am SST & !SST_Sub) OR (Flag=False & I am Técnico & !SST_Sub)
+                          Set(varCanEditSST,
+                              If(varSelectedEvaluation.responsable_sst_responde,
+                                  varSelectedEvaluation.email_responsable_sst = varUserEmail && !varSSTSubmitted,
+                                  varSelectedEvaluation.email_responsable_tecnico = varUserEmail && !varSSTSubmitted
+                              )
+                          );
+                          // 3. MA Section Permission
+                          // Logic: (Flag=True & I am MA & !MA_Sub) OR (Flag=False & I am Técnico & !MA_Sub)
+                          Set(varCanEditMA,
+                              If(varSelectedEvaluation.responsable_ma_responde,
+                                  varSelectedEvaluation.email_responsable_ma = varUserEmail && !varMASubmitted,
+                                  varSelectedEvaluation.email_responsable_tecnico = varUserEmail && !varMASubmitted
+                              )
+                          );
+                          // 4. Approver Permission
+                          Set(varCanApprove, 
+                              varSelectedEvaluation.email_jefe_area = varUserEmail && 
+                              !varSelectedEvaluation.aprobada && 
+                              varTecnicoSubmitted &&
+                              varSSTSubmitted &&
+                              varMASubmitted
+                          );
+
+                          Select(btnBuildToc);
+                          Set(varSelectedTocQId,"");
+                        PressedColor: =RGBA(255, 255, 255, 1)
+                        PressedFill: =RGBA(0, 18, 107, 1)
+                        SearchFields: =["documento_compras","DisplayText","nombre_proveedor"]
+                        SelectMultiple: =false
+                        SelectionColor: =RGBA(255, 255, 255, 1)
+                        SelectionFill: =RGBA(56, 96, 178, 1)
+                        Size: =12
+                        Width: =Parent.Width - 20
+                  - conInfo:
+                      Control: GroupContainer@1.3.0
+                      Variant: AutoLayout
+                      Properties:
+                        BorderColor: =RGBA(200, 200, 200, 1)
+                        BorderThickness: =2
+                        DropShadow: =DropShadow.None
+                        FillPortions: =0
+                        Height: =txtInfo.Height
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutMaxHeight: =0
+                        LayoutMaxWidth: =0
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        Visible: =!IsBlank(varSelectedEvaluation)
+                      Children:
+                        - txtInfo:
+                            Control: HtmlViewer@2.1.0
+                            Properties:
+                              AutoHeight: =true
+                              Font: =Font.'Open Sans'
+                              HtmlText: |+
+                                ="<div style='
+                                    font-family:Segoe UI;
+                                    font-size:15px;
+                                    line-height:1.4;
+                                    color:#003087;    
+                                '>
+                                    <table style='
+                                        width:100%;
+                                        border-collapse:collapse;        
+                                    '>
+                                        <tr>
+                                            <td style='
+                                                width:100px;
+                                                padding:2px 0;
+                                                font-weight:600;
+                                            '>Contrato N°</td>
+                                            <td style='
+                                                padding:2px 0;                
+                                            '>" & varSelectedEvaluation.documento_compras & "</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td style='
+                                                padding:2px 0;
+                                                font-weight:600;
+                                            '>Fecha</td>
+                                            <td style='
+                                                padding:2px 0;
+                                            '>" & Text(varSelectedEvaluation.fecha_evaluacion, "[$-en-US]mmmm d, yyyy") & "</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td style='
+                                                padding:2px 0;
+                                                font-weight:600;
+                                            '>Rol</td>
+                                            <td style='
+                                                padding:2px 0;
+                                            '>" &
+                                                With(
+                                                    {
+                                                        strRoles:
+                                                            Concat(
+                                                                Filter(
+                                                                    Table(
+                                                                        {Name:"Técnico", Flag: varCanEditTecnico},
+                                                                        {Name:"SST", Flag: varCanEditSST},
+                                                                        {Name:"MA", Flag: varCanEditMA},
+                                                                        {Name:"Aprobador", Flag: varCanApprove}
+                                                                    ),
+                                                                    Flag
+                                                                ),
+                                                                Name,
+                                                                ", "
+                                                            )
+                                                    },
+                                                    If(IsBlank(strRoles), "-", strRoles)
+                                                )
+                                            & "</td>
+                                        </tr>
+                                    </table>
+                                </div>"
+                              LayoutMaxHeight: =0
+                              LayoutMaxWidth: =0
+                              LayoutMinHeight: =16
+                              LayoutMinWidth: =16
+                              Size: =15
+                              Width: =Parent.Width
+                  - galTOCQuestions:
+                      Control: Gallery@2.15.0
+                      Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+                      Properties:
+                        BorderColor: =RGBA(200, 200, 200, 1)
+                        BorderThickness: =2
+                        FillPortions: =0
+                        Height: =430
+                        Items: |-
+                          =SortByColumns(
+                              Filter(colToc, IsVisible),
+                              "SortOrder",
+                              SortOrder.Ascending
+                          )
+                        LayoutMaxHeight: =0
+                        LayoutMaxWidth: =0
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        TemplatePadding: =0.5
+                        TemplateSize: =26
+                        Visible: =!IsBlank(varSelectedEvaluation)
+                        Width: =Parent.Width
+                      Children:
+                        - lblTocItemScore:
+                            Control: Label@2.5.1
+                            Properties:
+                              Align: =Align.Right
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              Color: =ColorValue("#003087")
+                              Font: =Font.'Segoe UI'
+                              Height: =Parent.TemplateHeight
+                              PaddingRight: =15
+                              Size: =12
+                              Text: |
+                                =Switch(
+                                    ThisItem.QId,
+
+                                    /* ===== YES / NO QUESTIONS ===== */
+
+                                    "CodigoEtica",
+                                        If(
+                                            IsBlank(varEtica),
+                                            "-",
+                                            If(varEtica, "Sí", "No")
+                                        ),
+
+                                    "MedioAmbienteYN",
+                                        If(
+                                            IsBlank(varMA),
+                                            "-",
+                                            If(varMA, "Sí", "No")
+                                        ),
+
+                                    /* ===== SCORE QUESTIONS ===== */
+
+                                    "CalidadQ1",
+                                        If(
+                                            IsBlank(cmpCalidadQ1.Score),
+                                            "-/" & Text(cmpCalidadQ1.TotalPoints),
+                                            Text(cmpCalidadQ1.Score) & "/" & Text(cmpCalidadQ1.TotalPoints)
+                                        ),
+
+                                    "CalidadQ2",
+                                        If(
+                                            IsBlank(cmpCalidadQ2.Score),
+                                            "-/" & Text(cmpCalidadQ2.TotalPoints),
+                                            Text(cmpCalidadQ2.Score) & "/" & Text(cmpCalidadQ2.TotalPoints)
+                                        ),
+
+                                    "CalidadQ3",
+                                        If(
+                                            IsBlank(cmpCalidadQ3.Score),
+                                            "-/" & Text(cmpCalidadQ3.TotalPoints),
+                                            Text(cmpCalidadQ3.Score) & "/" & Text(cmpCalidadQ3.TotalPoints)
+                                        ),
+
+                                    "CalidadQ4",
+                                        If(
+                                            IsBlank(cmpCalidadQ4.Score),
+                                            "-/" & Text(cmpCalidadQ4.TotalPoints),
+                                            Text(cmpCalidadQ4.Score) & "/" & Text(cmpCalidadQ4.TotalPoints)
+                                        ),
+
+                                    "CalidadQ5",
+                                        If(
+                                            IsBlank(cmpCalidadQ5.Score),
+                                            "-/" & Text(cmpCalidadQ5.TotalPoints),
+                                            Text(cmpCalidadQ5.Score) & "/" & Text(cmpCalidadQ5.TotalPoints)
+                                        ),
+
+                                    "OportunidadQ1",
+                                        If(
+                                            IsBlank(cmpOportunidadQ1.Score),
+                                            "-/" & Text(cmpOportunidadQ1.TotalPoints),
+                                            Text(cmpOportunidadQ1.Score) & "/" & Text(cmpOportunidadQ1.TotalPoints)
+                                        ),
+
+                                    "GestionQ1",
+                                        If(
+                                            IsBlank(cmpGestionQ1.Score),
+                                            "-/" & Text(cmpGestionQ1.TotalPoints),
+                                            Text(cmpGestionQ1.Score) & "/" & Text(cmpGestionQ1.TotalPoints)
+                                        ),
+
+                                    "GestionQ2",
+                                        If(
+                                            IsBlank(cmpGestionQ2.Score),
+                                            "-/" & Text(cmpGestionQ2.TotalPoints),
+                                            Text(cmpGestionQ2.Score) & "/" & Text(cmpGestionQ2.TotalPoints)
+                                        ),
+
+                                    "SSTQ1",
+                                        If(
+                                            IsBlank(cmpSST.Score),
+                                            "-/" & Text(cmpSST.TotalPoints),
+                                            Text(cmpSST.Score) & "/" & Text(cmpSST.TotalPoints)
+                                        ),
+
+                                    "MAQ1",
+                                        If(
+                                            IsBlank(cmpMA.Score),
+                                            "-/" & Text(cmpMA.TotalPoints),
+                                            Text(cmpMA.Score) & "/" & Text(cmpMA.TotalPoints)
+                                        ),
+
+                                    /* ===== OBSERVATIONS ===== */
+
+                                    "ObservationTecnico",
+                                    If(IsBlank(Trim(cmpObservationTecnico.Value)), "-", "✓"),
+
+                                    "ObservationSST",
+                                        If(IsBlank(Trim(cmpObservationSST.Value)), "-", "✓"),
+
+                                    "ObservationMA",
+                                        If(IsBlank(Trim(cmpObservationMA.Value)), "-", "✓"),
+
+                                    "ObservationJefeArea",
+                                        If(IsBlank(Trim(cmpObservationJefeArea.Value)), "-", "✓"),
+
+                                    /* ===== DEFAULT ===== */
+                                    "-"
+                                )
+                              Width: =70
+                              X: =Parent.TemplateWidth - Self.Width
+                        - lblTocItemTitle:
+                            Control: Label@2.5.1
+                            Properties:
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              Color: =ColorValue("#003087")
+                              Font: =Font.'Segoe UI'
+                              Height: =Parent.TemplateHeight
+                              Size: =12
+                              Text: =ThisItem.Title
+                              Width: =Parent.TemplateWidth - 70
+                        - btnOverlay:
+                            Control: Classic/Button@2.2.0
+                            Properties:
+                              BorderColor: =ColorFade(Self.Fill, -15%)
+                              BorderThickness: =0
+                              Color: =RGBA(255, 255, 255, 1)
+                              DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                              Fill: =If(ThisItem.QId = varSelectedTocQId,  RGBA(0,0,0,0.1),  RGBA(0,0,0,0))
+                              FocusedBorderThickness: =0
+                              Font: =Font.'Open Sans'
+                              Height: =lblTocItemTitle.Height
+                              HoverBorderColor: =ColorFade(Self.BorderColor, 20%)
+                              HoverColor: =RGBA(255, 255, 255, 1)
+                              HoverFill: = RGBA(0,0,0,0.05)
+                              OnSelect: "=Set(varSelectedTocQId, ThisItem.QId);\r\n// Notify(varSelectedTocQId)\r\n/*Switch(\r\n    ThisItem.QId,\r\n\r\n    \"CalidadQ1\", SetFocus(btnAnchor_CalidadQ1),\r\n    \"CalidadQ2\", SetFocus(btnAnchor_CalidadQ2),\r\n    \"CalidadQ3\", SetFocus(btnAnchor_CalidadQ3),\r\n    \"CalidadQ4\", SetFocus(btnAnchor_CalidadQ4),\r\n    \"CalidadQ5\", SetFocus(btnAnchor_CalidadQ5),\r\n    \r\n    \"OportunidadQ1\", SetFocus(btnAnchor_OportunidadQ1),\r\n\r\n    \"GestionQ1\", SetFocus(btnAnchor_GestionQ1),\r\n    \"GestionQ2\", SetFocus(btnAnchor_GestionQ2),\r\n\r\n    \"CodigoEtica\", SetFocus(btnAnchor_CodigoEtica),\r\n    \"MedioAmbienteYN\", SetFocus(btnAnchor_MAResonsable),\r\n    \r\n    \"SSTQ1\", SetFocus(btnAnchor_SST),\r\n    \"MAQ1\", SetFocus(btnAnchor_MA),\r\n    \r\n    Notify(\"No anchor mapping for \" & ThisItem.QId, NotificationType.Warning)\r\n)*/\r\n"
+                              PressedBorderColor: =Self.Fill
+                              PressedColor: =Self.Fill
+                              PressedFill: =RGBA(0,0,0,0.08)
+                              RadiusBottomLeft: =4
+                              RadiusBottomRight: =4
+                              RadiusTopLeft: =4
+                              RadiusTopRight: =4
+                              Text: =""
+                              Width: =Parent.Width
+            - conMainForm:
+                Control: GroupContainer@1.3.0
+                Variant: AutoLayout
+                Properties:
+                  DropShadow: =DropShadow.None
+                  FillPortions: =3
+                  Height: =Parent.Height
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGap: =15
+                  LayoutMaxHeight: =0
+                  LayoutMaxWidth: =0
+                  LayoutMinHeight: =16
+                  LayoutMinWidth: =16
+                  LayoutOverflowY: =LayoutOverflow.Scroll
+                  PaddingBottom: =24
+                  PaddingLeft: =24
+                  PaddingRight: =24
+                  PaddingTop: =4
+                  Width: |+
+                    =0
+                Children:
+                  - conEmptyState:
+                      Control: GroupContainer@1.3.0
+                      Variant: ManualLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        FillPortions: =0
+                        LayoutMaxHeight: =0
+                        LayoutMaxWidth: =0
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        Visible: =IsBlank(varSelectedEvaluation)
+                      Children:
+                        - lblEmpty:
+                            Control: Label@2.5.1
+                            Properties:
+                              Align: =Align.Center
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              Color: =Color.MediumPurple
+                              Font: =Font.'Open Sans'
+                              Height: =49
+                              Text: ="Por favor, selecciona una evaluación de la lista"
+                              Width: =892
+                              X: =40
+                              Y: =40
+                  - conFormHeader:
+                      Control: GroupContainer@1.3.0
+                      Variant: ManualLayout
+                      Properties:
+                        BorderColor: =RGBA(225, 223, 221, 1)
+                        BorderThickness: =1
+                        Fill: =RGBA(255, 255, 255, 1)
+                        FillPortions: =0
+                        Height: =190
+                        LayoutMaxHeight: =0
+                        LayoutMaxWidth: =0
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        PaddingBottom: =16
+                        PaddingLeft: =16
+                        PaddingRight: =16
+                        PaddingTop: =16
+                        RadiusBottomLeft: =8
+                        RadiusBottomRight: =8
+                        RadiusTopLeft: =8
+                        RadiusTopRight: =8
+                        Visible: =!IsBlank(varSelectedEvaluation)
+                      Children:
+                        - conEvaluationHeader:
+                            Control: GroupContainer@1.3.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              Height: =Parent.Height
+                              LayoutAlignItems: =LayoutAlignItems.Center
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =8
+                              PaddingBottom: =10
+                              PaddingLeft: =10
+                              PaddingRight: =10
+                              PaddingTop: =10
+                              Width: =Parent.Width
+                            Children:
+                              - lblContractTitle:
+                                  Control: Label@2.5.1
+                                  Properties:
+                                    BorderColor: =RGBA(0, 18, 107, 1)
+                                    Color: =ColorValue("#003087")
+                                    Font: =Font.'Segoe UI'
+                                    FontWeight: =FontWeight.Bold
+                                    Size: =20
+                                    Text: ="Evaluación de Desempeño – Contrato N° " & varSelectedEvaluation.documento_compras
+                                    Width: =Parent.Width - 20
+                                    X: =40
+                                    Y: =40
+                              - conHeaderDetails:
+                                  Control: GroupContainer@1.3.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    DropShadow: =DropShadow.None
+                                    Height: =Max(htmlDetail1.Height, htmlDetail2.Height)
+                                    LayoutAlignItems: =LayoutAlignItems.Center
+                                    LayoutDirection: =LayoutDirection.Horizontal
+                                    LayoutMaxHeight: =0
+                                    LayoutMaxWidth: =0
+                                    LayoutMinHeight: =40
+                                    LayoutMinWidth: =16
+                                    Width: =Parent.Width - 40
+                                  Children:
+                                    - htmlDetail1:
+                                        Control: HtmlViewer@2.1.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Font: =Font.'Open Sans'
+                                          HtmlText: |-
+                                            ="<div style='
+                                                font-family:Segoe UI;
+                                                font-size:18 px;
+                                                line-height:1.4;
+                                                color:#003087;
+                                                font-weight:600;
+                                            '>
+                                                <table style='
+                                                    width:100%;
+                                                    border-collapse:collapse;
+                                                '>
+                                                    <tr>
+                                                        <td style='width:110px; padding:2px 0;'>Sociedad:</td>
+                                                        <td style='padding:2px 0;'>" & varSelectedEvaluation.sociedad & "</td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td style='padding:2px 0;'>Proveedor:</td>
+                                                        <td style='padding:2px 0;'>" & varSelectedEvaluation.nombre_proveedor & "</td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td style='padding:2px 0;'>Valor:</td>
+                                                        <td style='padding:2px 0;'>" & varSelectedEvaluation.valor_contrato & "</td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td style='padding:2px 0;'>Evaluador:</td>
+                                                        <td style='padding:2px 0;'>" & varSelectedEvaluation.nombre_responsable_tecnico & "</td>
+                                                    </tr>
+                                                </table>
+                                            </div>"
+                                          LayoutMaxHeight: =0
+                                          LayoutMaxWidth: =0
+                                          LayoutMinHeight: =16
+                                          LayoutMinWidth: =16
+                                          Width: =400
+                                    - htmlDetail2:
+                                        Control: HtmlViewer@2.1.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Font: =Font.'Open Sans'
+                                          HtmlText: |-
+                                            ="<div style='
+                                                font-family:Segoe UI;
+                                                font-size:18px;
+                                                line-height:1.4;
+                                                color:#003087;
+                                                font-weight:600;
+                                            '>
+                                                <table style='
+                                                    width:100%;
+                                                    border-collapse:collapse;
+                                                '>
+                                                    <tr>
+                                                        <td style='width:230px; padding:2px 0;'>Fecha Evaluacion:</td>
+                                                        <td style='padding:2px 0;'>" & varSelectedEvaluation.fecha_evaluacion & "</td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td style='padding:2px 0;'>Inicio Validez:</td>
+                                                        <td style='padding:2px 0;'>" & varSelectedEvaluation.fecha_inicio_validez & "</td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td style='padding:2px 0;'>Fin Validez:</td>
+                                                        <td style='padding:2px 0;'>" & varSelectedEvaluation.fecha_fin_validez & "</td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td style='padding:2px 0;'>Consecutivo evaluación:</td>
+                                                        <td style='padding:2px 0;'>" & varSelectedEvaluation.consecutivo_evaluacion & "</td>
+                                                    </tr>
+                                                </table>
+                                            </div>"
+                                          LayoutMaxHeight: =0
+                                          LayoutMaxWidth: =0
+                                          LayoutMinHeight: =16
+                                          LayoutMinWidth: =16
+                                          Width: =450
+                  - conCalidadQ1:
+                      Control: GroupContainer@1.3.0
+                      Variant: ManualLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        FillPortions: =0
+                        Height: =cmpCalidadQ1.ContentHeight
+                        LayoutMaxHeight: =0
+                        LayoutMaxWidth: =0
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        Visible: =!IsBlank(varSelectedEvaluation) && varSelectedTocQId = "CalidadQ1"
+                      Children:
+                        - cmpCalidadQ1:
+                            Control: CanvasComponent
+                            ComponentName: cmpSubCriteria
+                            Properties:
+                              Enable: =varCanEditTecnico && !varTecnicoSubmitted
+                              Height: =cmpCalidadQ1.ContentHeight
+                              OnSelectOption1: =Set(varCalidadQ1Selected, 1)
+                              OnSelectOption2: =Set(varCalidadQ1Selected, 2)
+                              OnSelectOption3: =Set(varCalidadQ1Selected, 3)
+                              Option1Text: ="Todos los bienes se recibieron a satisfacción y sin problemas de funcionamiento."
+                              Option2Text: ="Algunos de los bienes recibidos a satisfacción presentaron problemas de funcionamiento después de la entrega, pero fueron intervenidos oportunamente por el contratista."
+                              Option3Text: ="Algunos de los bienes recibidos a satisfacción presentaron problemas de funcionamiento después de la entrega, pero NO fueron intervenidos oportunamente por el contratista. (y/o se incurran en faltas o incumplimientos asociados a las especificaciones de los bienes que de lugar a la apliación de una multa)"
+                              OptionCount: =3
+                              SelectedIndex: =varCalidadQ1Selected
+                              TitleText: |-
+                                ="1. Calidad de los Bienes Suministrados: cumplimiento especificaciones"
+                              TotalPoints: =6
+                              Width: =Parent.Width
+                  - conCalidadQ2:
+                      Control: GroupContainer@1.3.0
+                      Variant: ManualLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        FillPortions: =0
+                        Height: =cmpCalidadQ2.ContentHeight
+                        LayoutMaxHeight: =0
+                        LayoutMaxWidth: =0
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        Visible: =!IsBlank(varSelectedEvaluation) && varSelectedTocQId = "CalidadQ2"
+                      Children:
+                        - cmpCalidadQ2:
+                            Control: CanvasComponent
+                            ComponentName: cmpSubCriteria
+                            Properties:
+                              Enable: =varCanEditTecnico && !varTecnicoSubmitted
+                              Height: |
+                                =cmpCalidadQ2.ContentHeight
+                              OnSelectOption1: =Set(varCalidadQ2Selected, 1)
+                              OnSelectOption2: =Set(varCalidadQ2Selected, 2)
+                              OnSelectOption3: =Set(varCalidadQ2Selected, 3)
+                              Option1Text: |-
+                                ="El personal demuestra, sistemática y evidentemente cooperación 
+                                que asegura el adecuado suministro de los bienes"
+                              Option2Text: ="El personal demuestra poca o regular cooperación, lo que dificulta el adecuado suministro de los bienes"
+                              Option3Text: ="El personal no demuestra cooperación, incluso cuando se le solicita, lo que dificulta el adecuado suministro de los bienes"
+                              OptionCount: =3
+                              SelectedIndex: =varCalidadQ2Selected
+                              TitleText: |-
+                                ="2. Calidad de los Bienes Suministrados: Cooperación"
+                              TotalPoints: =6
+                              Width: =Parent.Width
+                  - conCalidadQ3:
+                      Control: GroupContainer@1.3.0
+                      Variant: ManualLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        FillPortions: =0
+                        Height: =cmpCalidadQ3.ContentHeight
+                        LayoutMaxHeight: =0
+                        LayoutMaxWidth: =0
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        Visible: =!IsBlank(varSelectedEvaluation) &&  varSelectedTocQId = "CalidadQ3"
+                      Children:
+                        - cmpCalidadQ3:
+                            Control: CanvasComponent
+                            ComponentName: cmpSubCriteria
+                            Properties:
+                              Enable: =varCanEditTecnico && !varTecnicoSubmitted
+                              Height: |
+                                =cmpCalidadQ3.ContentHeight
+                              OnSelectOption1: =Set(varCalidadQ3Selected, 1)
+                              OnSelectOption2: =Set(varCalidadQ3Selected, 2)
+                              OnSelectOption3: =Set(varCalidadQ3Selected, 3)
+                              Option1Text: ="El servicio prestado cumplió con todas las especificaciones y normas técnicas establecidas en el contrato."
+                              Option2Text: ="El servicio prestado tuvo algunos incumplimientos y/o fallas menores, asociadas al cumplimiento de las especificaciones y/o a las normas técnicas."
+                              Option3Text: ="El servicio prestado tuvo incumplimientos y/o fallas graves, asociadas al cumplimiento de las especificaciones y/o a las normas  técnicas. (y/o se incurran en faltas o incumplimientos asociados a las especificaciones de los servicios que de lugar a la apliación de una multa) "
+                              OptionCount: =3
+                              SelectedIndex: =varCalidadQ3Selected
+                              TitleText: |-
+                                ="3. Calidad de los Servicios Prestados: cumplimiento de especificaciones"
+                              TotalPoints: =6
+                              Width: =Parent.Width
+                  - conCalidadQ4:
+                      Control: GroupContainer@1.3.0
+                      Variant: ManualLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        FillPortions: =0
+                        Height: =cmpCalidadQ4.ContentHeight
+                        LayoutMaxHeight: =0
+                        LayoutMaxWidth: =0
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        Visible: =!IsBlank(varSelectedEvaluation) &&  varSelectedTocQId = "CalidadQ4"
+                      Children:
+                        - cmpCalidadQ4:
+                            Control: CanvasComponent
+                            ComponentName: cmpSubCriteria
+                            Properties:
+                              Enable: =varCanEditTecnico && !varTecnicoSubmitted
+                              Height: |
+                                =cmpCalidadQ4.ContentHeight
+                              OnSelectOption1: =Set(varCalidadQ4Selected, 1)
+                              OnSelectOption2: =Set(varCalidadQ4Selected, 2)
+                              OnSelectOption3: =Set(varCalidadQ4Selected, 3)
+                              Option1Text: ="El personal asignado fue suficiente y tenía las competencias necesarias para ejecutar todas las actividades del contrato."
+                              Option2Text: ="El personal asignado inicialmente, no fue suficiente y/o no tenía las competencias necesarias para ejecutar todas las actividades del contrato, situación que fue subsanada oportunamente."
+                              Option3Text: ="El personal asignado no fue suficiente y/o no tenía las competencias necesarias para ejecutar todas las actividades del contrato, situación que no fue subsanada. (y/o se incurran en faltas o incumplimientos asociados al desempeño del personal que ejecutó el servicio que de lugar a la apliación de una multa) "
+                              OptionCount: =3
+                              SelectedIndex: =varCalidadQ4Selected
+                              TitleText: |-
+                                ="4. Calidad de los Servicios Prestados: Personal que ejecutó el Servicio."
+                              TotalPoints: =6
+                              Width: =Parent.Width
+                  - conCalidadQ5:
+                      Control: GroupContainer@1.3.0
+                      Variant: ManualLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        FillPortions: =0
+                        Height: |+
+                          =cmpCalidadQ5.ContentHeight
+                        LayoutMaxHeight: =0
+                        LayoutMaxWidth: =0
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        Visible: =!IsBlank(varSelectedEvaluation) &&  varSelectedTocQId = "CalidadQ5"
+                      Children:
+                        - cmpCalidadQ5:
+                            Control: CanvasComponent
+                            ComponentName: cmpSubCriteria
+                            Properties:
+                              Enable: =varCanEditTecnico && !varTecnicoSubmitted
+                              Height: |
+                                =cmpCalidadQ5.ContentHeight
+                              OnSelectOption1: =Set(varCalidadQ5Selected, 1)
+                              OnSelectOption2: =Set(varCalidadQ5Selected, 2)
+                              OnSelectOption3: =Set(varCalidadQ5Selected, 3)
+                              Option1Text: ="Cuando fue requerido, el contratista dispuso el personal  y / o los medios requeridos para atender la situación en el sitio requerido"
+                              Option2Text: ="En algunas de las ocasiones en las que fue requerido, el contratista dispuso el personal  y / o los medios requeridos para atender la situación en el sitio requerido"
+                              Option3Text: ="Cuando fue requerido, el contratista no dispuso el personal  y / o los medios requeridos para atender la situación en el sitio requerido. (y/o se incurran en faltas o incumplimientos asociados a la atención oportuna de los requerimientos que de lugar a la apliación de una multa) "
+                              OptionCount: =3
+                              SelectedIndex: =varCalidadQ5Selected
+                              TitleText: |-
+                                ="5. Calidad de los servicios prestados: atención a los requerimientos"
+                              TotalPoints: =6
+                              Width: =Parent.Width
+                  - conOportunidadQ1:
+                      Control: GroupContainer@1.3.0
+                      Variant: ManualLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        FillPortions: =0
+                        Height: =cmpOportunidadQ1.ContentHeight
+                        LayoutMaxHeight: =0
+                        LayoutMaxWidth: =0
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        Visible: =!IsBlank(varSelectedEvaluation) &&  varSelectedTocQId = "OportunidadQ1"
+                      Children:
+                        - cmpOportunidadQ1:
+                            Control: CanvasComponent
+                            ComponentName: cmpSubCriteria
+                            Properties:
+                              Enable: =varCanEditTecnico && !varTecnicoSubmitted
+                              Height: =cmpOportunidadQ1.ContentHeight
+                              OnSelectOption1: =Set(varOportunidadQ1Selected, 1)
+                              OnSelectOption2: =Set(varOportunidadQ1Selected, 2)
+                              OnSelectOption3: =Set(varOportunidadQ1Selected, 3)
+                              Option1Text: ="Los bienes  fueron entregados/ los servicios  fueron prestados en la fecha programada con el proveedor."
+                              Option2Text: ="Los bienes NO fueron entregados/ los servicios No fueron prestados en la fecha programada con el proveedor, pero NO se generaron impactos negativos para el Mandante."
+                              Option3Text: ="Los bienes NO fueron entregados/ los servicios No fueron prestados en la fecha programada con el proveedor y como consecuencia se generaron impactos negativos para Iel Mandante.  (y/o se incurran en faltas o incumplimientos asociados a los plazos programados de los bienes que de lugar a la apliación de una multa) "
+                              OptionCount: =3
+                              SelectedIndex: =varOportunidadQ1Selected
+                              TitleText: |-
+                                ="1. Oportunidad: cumplimiento de los plazos programados"
+                              TotalPoints: =30
+                              Width: =Parent.Width
+                  - conGestionQ1:
+                      Control: GroupContainer@1.3.0
+                      Variant: ManualLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        FillPortions: =0
+                        Height: =cmpGestionQ1.ContentHeight
+                        LayoutMaxHeight: =0
+                        LayoutMaxWidth: =0
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        Visible: =!IsBlank(varSelectedEvaluation) &&  varSelectedTocQId = "GestionQ1"
+                      Children:
+                        - cmpGestionQ1:
+                            Control: CanvasComponent
+                            ComponentName: cmpSubCriteria
+                            Properties:
+                              Enable: =varCanEditTecnico && !varTecnicoSubmitted
+                              Height: =cmpGestionQ1.ContentHeight
+                              OnSelectOption1: =Set(varGestionQ1Selected, 1)
+                              OnSelectOption2: =Set(varGestionQ1Selected, 2)
+                              OnSelectOption3: =Set(varGestionQ1Selected, 3)
+                              Option1Text: ="El tiempo de entrega al Mandante de las Pólizas y demás documentos para dar la Orden de Inicio, fue menor o igual al tiempo establecido en el Contrato."
+                              Option2Text: ="El tiempo de entrega al Mandante de las Pólizas y demás documentos para dar la Orden de Inicio, fue mayor al tiempo establecido en el Contrato."
+                              Option3Text: =
+                              OptionCount: =2
+                              SelectedIndex: =varGestionQ1Selected
+                              TitleText: ="1. Entrega de Documentos para Orden de Inicio."
+                              TotalPoints: =10
+                              Width: =Parent.Width
+                  - conGestionQ2:
+                      Control: GroupContainer@1.3.0
+                      Variant: ManualLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        FillPortions: =0
+                        Height: =cmpGestionQ2.ContentHeight
+                        LayoutMaxHeight: =0
+                        LayoutMaxWidth: =0
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        Visible: =!IsBlank(varSelectedEvaluation) &&  varSelectedTocQId = "GestionQ2"
+                      Children:
+                        - cmpGestionQ2:
+                            Control: CanvasComponent
+                            ComponentName: cmpSubCriteria
+                            Properties:
+                              Enable: =varCanEditTecnico && !varTecnicoSubmitted
+                              Height: =cmpGestionQ2.ContentHeight
+                              OnSelectOption1: =Set(varGestionQ2Selected, 1)
+                              OnSelectOption2: =Set(varGestionQ2Selected, 2)
+                              OnSelectOption3: =Set(varGestionQ2Selected, 3)
+                              Option1Text: ="Todas las facturas y sus soportes, la documentación contractual requerida durante la ejecución (informes, certificados, constancias, licencias, etc) y la documentación postcontractual (manuales, protocolos de pruebas, información técnica, etc) fueron entregadas de acuerdo a lo programado y sin errores."
+                              Option2Text: ="Algunas facturas y sus soportes, la documentación contractual requerida durante la ejecución (informes, certificados, constancias, licencias, etc) y/o la documentación postcontractual (manuales, protocolos de pruebas, información técnica, etc) fueron entregadas de acuerdo a lo programado pero con errores y como consecuencia se realizó su corrección."
+                              Option3Text: ="Algunas facturas y sus soportes, la documentación contractual requerida durante la ejecución (informes, certificados, constancias, licencias, etc) y/o la documentación postcontractual (manuales, protocolos de pruebas, información técnica, etc) NO fueron entregadas de acuerdo con lo programado y con errores.  (y/o se incurran en faltas o incumplimientos asociados a toda la documentación contractual que de lugar a la apliación de una multa) "
+                              OptionCount: =3
+                              SelectedIndex: =varGestionQ2Selected
+                              TitleText: ="2. Entrega de Documentos Contractuales."
+                              TotalPoints: =10
+                              Width: =Parent.Width
+                  - conCodigoEtica:
+                      Control: GroupContainer@1.3.0
+                      Variant: ManualLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        FillPortions: =0
+                        Height: =cmpCodigoEtica.ContentHeight
+                        LayoutMaxHeight: =0
+                        LayoutMaxWidth: =0
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        Visible: =!IsBlank(varSelectedEvaluation) &&  varSelectedTocQId = "CodigoEtica"
+                      Children:
+                        - cmpCodigoEtica:
+                            Control: CanvasComponent
+                            ComponentName: cmpYesNoQuestion
+                            Properties:
+                              Enable: =varCanEditTecnico && !varTecnicoSubmitted
+                              Height: =cmpCodigoEtica.ContentHeight
+                              Label: ="Código de ética"
+                              OnSelectNo: =Set(varEtica, false)
+                              OnSelectYes: =Set(varEtica, true)
+                              Question: ="El contratista incurrió en faltas al código de ética:"
+                              SelectedValue: =varEtica
+                              Width: =Parent.Width
+                  - conMedioAmbienteYN:
+                      Control: GroupContainer@1.3.0
+                      Variant: ManualLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        FillPortions: =0
+                        Height: =cmpMAResonsable.ContentHeight
+                        LayoutMaxHeight: =0
+                        LayoutMaxWidth: =0
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        Visible: =!IsBlank(varSelectedEvaluation) &&  varSelectedTocQId = "MedioAmbienteYN"
+                      Children:
+                        - cmpMAResonsable:
+                            Control: CanvasComponent
+                            ComponentName: cmpYesNoQuestion
+                            Properties:
+                              Enable: =varCanEditTecnico && !varTecnicoSubmitted
+                              Height: =cmpMAResonsable.ContentHeight
+                              Label: ="Medioambiente"
+                              OnSelectNo: |-
+                                =Set(varMA, false);
+                                Set(varCanEditMA, If(varMASubmitted, false, true));
+                                Select(btnBuildToc)
+                              OnSelectYes: |-
+                                =Set(varMA, true);
+                                Set(varCanEditMA,false);
+                                Select(btnBuildToc)
+                              Question: ="Responsable de criterio de medioambiente debe responder:"
+                              SelectedValue: =varMA
+                              Width: =Parent.Width
+                  - conObservationTecnico:
+                      Control: GroupContainer@1.3.0
+                      Variant: ManualLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        FillPortions: =0
+                        Height: =cmpObservationTecnico.Height
+                        LayoutMaxHeight: =0
+                        LayoutMaxWidth: =0
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        Visible: =!IsBlank(varSelectedEvaluation) &&  varSelectedTocQId = "ObservationTecnico"
+                      Children:
+                        - cmpObservationTecnico:
+                            Control: CanvasComponent
+                            ComponentName: cmpObservationBox
+                            Properties:
+                              Default: =varObservationTecnico
+                              Enable: =varCanEditTecnico && !varTecnicoSubmitted
+                              Height: =200
+                              LabelText: ="Observación Tecnico"
+                              Width: =Parent.Width
+                  - conSSTQ1:
+                      Control: GroupContainer@1.3.0
+                      Variant: ManualLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        FillPortions: =0
+                        Height: =cmpSST.ContentHeight
+                        LayoutMaxHeight: =0
+                        LayoutMaxWidth: =0
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        Visible: =!IsBlank(varSelectedEvaluation) &&  varSelectedTocQId = "SSTQ1"
+                      Children:
+                        - cmpSST:
+                            Control: CanvasComponent
+                            ComponentName: cmpSubCriteria
+                            Properties:
+                              Enable: =varCanEditSST && !varSSTSubmitted
+                              Height: =cmpSST.ContentHeight
+                              OnSelectOption1: =Set(varSSTQ1Selected, 1)
+                              OnSelectOption2: =Set(varSSTQ1Selected, 2)
+                              OnSelectOption3: =Set(varSSTQ1Selected, 3)
+                              Option1Text: |-
+                                ="El contratista durante la ejecución del contrato cumplió con los temas administrativos y de terreno de Seguridad y Salud en el Trabajo (carpetas de arranque, procedimientos, MIPER, entrega de información, respuesta de inspecciones en terreno, etc.) en acuerdo a todas las actividades del objeto del contrato y el reglamento especial de empresas contratistas vigente. 
+                                Nota: Si por cualquier causa o motivo se presenta algún accidente grave o mortal aunque el contratista haya cumplido a cavalidad lo antes mencionado su nota total será 0. "
+                              Option2Text: ="El contratista durante la ejecución del contrato presento algunos incumplimientos con los temas administrativos y de terreno de Seguridad y Salud en el Trabajo (carpetas de arranque, procedimientos, MIPER, entrega de información, respuesta de inspecciones etc.) en acuerdo a todas las actividades del objeto del contrato y el reglamento especial de empresas contratistas vigente."
+                              Option3Text: ="El contratista durante la ejecución del contrato presento incumplimientos reiterativos con temas administrativos y de terreno de Seguridad y Salud en el Trabajo (carpetas de arranque, procedimientos, MIPER, entrega de información, respuesta de inspecciones etc.), o se presentaron accidentes graves o mortales derivados de una deficiente administracion y gestion de los riesgos, y/o se incurrieron en faltas o incumplimientos asociados a medidas de control, procedimientos de trabajos, capacitación, normas y todo lo inherente a la seguridad y salud en el trabajo que de lugar a la apliación de una multa en acuerdo a todas las actividades del objeto del contrato y el reglamento especial de empresas contratistas vigente."
+                              OptionCount: =3
+                              SelectedIndex: =varSSTQ1Selected
+                              TitleText: ="1. Requisitos en Salud Ocupacional"
+                              TotalPoints: =10
+                              Width: =Parent.Width
+                  - conObservationSST:
+                      Control: GroupContainer@1.3.0
+                      Variant: ManualLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        FillPortions: =0
+                        Height: =cmpObservationSST.Height
+                        LayoutMaxHeight: =0
+                        LayoutMaxWidth: =0
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        Visible: =!IsBlank(varSelectedEvaluation) &&  varSelectedTocQId = "ObservationSST"
+                      Children:
+                        - cmpObservationSST:
+                            Control: CanvasComponent
+                            ComponentName: cmpObservationBox
+                            Properties:
+                              Default: =varObservationSST
+                              Enable: =varCanEditSST && !varSSTSubmitted
+                              Height: =200
+                              LabelText: ="Observación SST"
+                              Width: =Parent.Width
+                  - conMAQ1:
+                      Control: GroupContainer@1.3.0
+                      Variant: ManualLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        FillPortions: =0
+                        Height: =cmpMA.ContentHeight
+                        LayoutMaxHeight: =0
+                        LayoutMaxWidth: =0
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        Visible: =!IsBlank(varSelectedEvaluation) &&  varSelectedTocQId = "MAQ1"
+                      Children:
+                        - cmpMA:
+                            Control: CanvasComponent
+                            ComponentName: cmpSubCriteria
+                            Properties:
+                              Enable: =varCanEditMA && !varMASubmitted
+                              Height: =cmpMA.ContentHeight
+                              OnSelectOption1: =Set(varMAQ1Selected, 1)
+                              OnSelectOption2: =Set(varMAQ1Selected, 2)
+                              OnSelectOption3: =Set(varMAQ1Selected, 3)
+                              Option1Text: ="El contratista cumple con todas las exigencias MedioAmnbientales Exigidas por el Mandante."
+                              Option2Text: ="El contratista presento incumplimientos de las Exigencias Medio Ambientales, durante la ejecucion del contrato. Corrigio y gestiono adecuadamente y oportunamente los Impactos Ambientales"
+                              Option3Text: ="El contratista presento incumplimientos de las Exigencias Medio Ambientales. Generando impactos ambientales significativos y consecuencias para el Mandante como multas, sanciones, afectación de reputación, entre otras."
+                              OptionCount: =3
+                              SelectedIndex: =varMAQ1Selected
+                              TitleText: ="1. Requisitos Ambientales"
+                              TotalPoints: =10
+                              Width: =Parent.Width
+                  - conObservationMA:
+                      Control: GroupContainer@1.3.0
+                      Variant: ManualLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        FillPortions: =0
+                        Height: =cmpObservationMA.Height
+                        LayoutMaxHeight: =0
+                        LayoutMaxWidth: =0
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        Visible: =!IsBlank(varSelectedEvaluation) &&  varSelectedTocQId = "ObservationMA"
+                      Children:
+                        - cmpObservationMA:
+                            Control: CanvasComponent
+                            ComponentName: cmpObservationBox
+                            Properties:
+                              Default: =varObservationMA
+                              Enable: =varCanEditMA && !varMASubmitted
+                              Height: =200
+                              LabelText: ="Observación MA"
+                              Width: =Parent.Width
+                  - conObservationJefeArea:
+                      Control: GroupContainer@1.3.0
+                      Variant: ManualLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        FillPortions: =0
+                        Height: =cmpObservationJefeArea.Height
+                        LayoutMaxHeight: =0
+                        LayoutMaxWidth: =0
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        Visible: =!IsBlank(varSelectedEvaluation) &&  varSelectedTocQId = "ObservationJefeArea"
+                      Children:
+                        - cmpObservationJefeArea:
+                            Control: CanvasComponent
+                            ComponentName: cmpObservationBox
+                            Properties:
+                              Default: =varObservationJefeArea
+                              Enable: =varCanApprove && !varAprobada
+                              Height: =200
+                              LabelText: ="Observación Jefe Area"
+                              Width: =Parent.Width
+                  - conResumen:
+                      Control: GroupContainer@1.3.0
+                      Variant: ManualLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        FillPortions: =0
+                        Height: =288
+                        LayoutMaxHeight: =0
+                        LayoutMaxWidth: =0
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        Visible: =!IsBlank(varSelectedEvaluation) && varCanApprove
+                        Width: =Parent.Width
+                      Children:
+                        - conResumenMain:
+                            Control: GroupContainer@1.3.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              Height: =240
+                              LayoutAlignItems: =LayoutAlignItems.Center
+                              LayoutDirection: =LayoutDirection.Vertical
+                              Width: =Parent.Width
+                              Y: =lblResumenTitle.Y + lblResumenTitle.Height + 8
+                            Children:
+                              - conCriteriaScores:
+                                  Control: GroupContainer@1.3.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    BorderColor: =RGBA(225, 223, 221, 1)
+                                    BorderThickness: =2
+                                    DropShadow: =DropShadow.None
+                                    Height: =100
+                                    LayoutAlignItems: =LayoutAlignItems.Center
+                                    LayoutDirection: =LayoutDirection.Horizontal
+                                    LayoutGap: =48
+                                    LayoutMaxHeight: =0
+                                    LayoutMaxWidth: =0
+                                    LayoutMinHeight: =16
+                                    LayoutMinWidth: =16
+                                    PaddingBottom: =8
+                                    PaddingLeft: =8
+                                    PaddingRight: =8
+                                    PaddingTop: =8
+                                  Children:
+                                    - cntCalidadScore:
+                                        Control: GroupContainer@1.3.0
+                                        Variant: AutoLayout
+                                        Properties:
+                                          DropShadow: =DropShadow.None
+                                          LayoutAlignItems: =LayoutAlignItems.Center
+                                          LayoutDirection: =LayoutDirection.Vertical
+                                          LayoutGap: =4
+                                          LayoutMaxHeight: =0
+                                          LayoutMaxWidth: =0
+                                          LayoutMinHeight: =16
+                                          LayoutMinWidth: =16
+                                          PaddingBottom: =8
+                                          PaddingLeft: =8
+                                          PaddingRight: =8
+                                          PaddingTop: =8
+                                          Width: =110
+                                        Children:
+                                          - lblScoreTitle:
+                                              Control: Label@2.5.1
+                                              Properties:
+                                                Align: =Align.Center
+                                                BorderColor: =RGBA(0, 18, 107, 1)
+                                                Color: =ColorValue("#003087")
+                                                FillPortions: =1
+                                                Font: =Font.'Open Sans'
+                                                FontWeight: =FontWeight.Semibold
+                                                LayoutMaxHeight: =0
+                                                LayoutMaxWidth: =0
+                                                LayoutMinHeight: =16
+                                                LayoutMinWidth: =16
+                                                Text: ="Calidad"
+                                                Width: =Parent.Width
+                                          - lblScoreDetails:
+                                              Control: Label@2.5.1
+                                              Properties:
+                                                Align: =Align.Center
+                                                BorderColor: =RGBA(0, 18, 107, 1)
+                                                Color: =ColorValue("#003087")
+                                                FillPortions: =1
+                                                Font: =Font.'Open Sans'
+                                                LayoutMaxHeight: =0
+                                                LayoutMaxWidth: =0
+                                                LayoutMinHeight: =16
+                                                LayoutMinWidth: =16
+                                                Size: =16
+                                                Text: |-
+                                                  =If(
+                                                      cmpCalidadQ1.SelectedIndex = 0 ||
+                                                      cmpCalidadQ2.SelectedIndex = 0 ||
+                                                      cmpCalidadQ3.SelectedIndex = 0 ||
+                                                      cmpCalidadQ4.SelectedIndex = 0 ||
+                                                      cmpCalidadQ5.SelectedIndex = 0,
+                                                      "-",
+                                                      Text(cmpCalidadQ1.Score + cmpCalidadQ2.Score + cmpCalidadQ3.Score + cmpCalidadQ4.Score + cmpCalidadQ5.Score)
+                                                  ) & " / 30"
+                                                Width: =Parent.Width
+                                    - cntOportunidadScore:
+                                        Control: GroupContainer@1.3.0
+                                        Variant: AutoLayout
+                                        Properties:
+                                          DropShadow: =DropShadow.None
+                                          LayoutAlignItems: =LayoutAlignItems.Center
+                                          LayoutDirection: =LayoutDirection.Vertical
+                                          LayoutGap: =4
+                                          LayoutMaxHeight: =0
+                                          LayoutMaxWidth: =0
+                                          LayoutMinHeight: =16
+                                          LayoutMinWidth: =16
+                                          PaddingBottom: =8
+                                          PaddingLeft: =8
+                                          PaddingRight: =8
+                                          PaddingTop: =8
+                                          Width: =110
+                                        Children:
+                                          - lblScoreTitle_1:
+                                              Control: Label@2.5.1
+                                              Properties:
+                                                Align: =Align.Center
+                                                BorderColor: =RGBA(0, 18, 107, 1)
+                                                Color: =ColorValue("#003087")
+                                                FillPortions: =1.2
+                                                Font: =Font.'Open Sans'
+                                                FontWeight: =FontWeight.Semibold
+                                                LayoutMaxHeight: =0
+                                                LayoutMaxWidth: =0
+                                                LayoutMinHeight: =16
+                                                LayoutMinWidth: =16
+                                                Text: ="Oportunidad"
+                                                Width: =Parent.Width
+                                          - lblScoreDetails_1:
+                                              Control: Label@2.5.1
+                                              Properties:
+                                                Align: =Align.Center
+                                                BorderColor: =RGBA(0, 18, 107, 1)
+                                                Color: =ColorValue("#003087")
+                                                FillPortions: =1
+                                                Font: =Font.'Open Sans'
+                                                LayoutMaxHeight: =0
+                                                LayoutMaxWidth: =0
+                                                LayoutMinHeight: =16
+                                                LayoutMinWidth: =16
+                                                Size: =16
+                                                Text: |+
+                                                  =If(
+                                                      cmpOportunidadQ1.SelectedIndex = 0,
+                                                      "-",
+                                                      Text(cmpOportunidadQ1.Score)
+                                                  ) & " / 30"
+                                                Width: =Parent.Width
+                                    - cntGestionScore:
+                                        Control: GroupContainer@1.3.0
+                                        Variant: AutoLayout
+                                        Properties:
+                                          DropShadow: =DropShadow.None
+                                          LayoutAlignItems: =LayoutAlignItems.Center
+                                          LayoutDirection: =LayoutDirection.Vertical
+                                          LayoutGap: =4
+                                          LayoutMaxHeight: =0
+                                          LayoutMaxWidth: =0
+                                          LayoutMinHeight: =16
+                                          LayoutMinWidth: =16
+                                          PaddingBottom: =8
+                                          PaddingLeft: =8
+                                          PaddingRight: =8
+                                          PaddingTop: =8
+                                          Width: =110
+                                        Children:
+                                          - lblScoreTitle_2:
+                                              Control: Label@2.5.1
+                                              Properties:
+                                                Align: =Align.Center
+                                                BorderColor: =RGBA(0, 18, 107, 1)
+                                                Color: =ColorValue("#003087")
+                                                FillPortions: =1
+                                                Font: =Font.'Open Sans'
+                                                FontWeight: =FontWeight.Semibold
+                                                LayoutMaxHeight: =0
+                                                LayoutMaxWidth: =0
+                                                LayoutMinHeight: =16
+                                                LayoutMinWidth: =16
+                                                Text: ="Gestión"
+                                                Width: =Parent.Width
+                                          - lblScoreDetails_2:
+                                              Control: Label@2.5.1
+                                              Properties:
+                                                Align: =Align.Center
+                                                BorderColor: =RGBA(0, 18, 107, 1)
+                                                Color: =ColorValue("#003087")
+                                                FillPortions: =1
+                                                Font: =Font.'Open Sans'
+                                                LayoutMaxHeight: =0
+                                                LayoutMaxWidth: =0
+                                                LayoutMinHeight: =16
+                                                LayoutMinWidth: =16
+                                                Size: =16
+                                                Text: |-
+                                                  =If(
+                                                      cmpGestionQ1.SelectedIndex = 0 || cmpGestionQ2.SelectedIndex = 0,
+                                                      "-",
+                                                      Text(cmpGestionQ1.Score + cmpGestionQ2.Score)
+                                                  ) & " / 20"
+                                                Width: =Parent.Width
+                                    - cntSSTScore:
+                                        Control: GroupContainer@1.3.0
+                                        Variant: AutoLayout
+                                        Properties:
+                                          DropShadow: =DropShadow.None
+                                          LayoutAlignItems: =LayoutAlignItems.Center
+                                          LayoutDirection: =LayoutDirection.Vertical
+                                          LayoutGap: =4
+                                          LayoutMaxHeight: =0
+                                          LayoutMaxWidth: =0
+                                          LayoutMinHeight: =16
+                                          LayoutMinWidth: =16
+                                          PaddingBottom: =8
+                                          PaddingLeft: =8
+                                          PaddingRight: =8
+                                          PaddingTop: =8
+                                          Width: =110
+                                        Children:
+                                          - lblScoreTitle_3:
+                                              Control: Label@2.5.1
+                                              Properties:
+                                                Align: =Align.Center
+                                                BorderColor: =RGBA(0, 18, 107, 1)
+                                                Color: =ColorValue("#003087")
+                                                FillPortions: =1
+                                                Font: =Font.'Open Sans'
+                                                FontWeight: =FontWeight.Semibold
+                                                LayoutMaxHeight: =0
+                                                LayoutMaxWidth: =0
+                                                LayoutMinHeight: =16
+                                                LayoutMinWidth: =16
+                                                Text: ="SST"
+                                                Width: =Parent.Width
+                                          - lblScoreDetails_3:
+                                              Control: Label@2.5.1
+                                              Properties:
+                                                Align: =Align.Center
+                                                BorderColor: =RGBA(0, 18, 107, 1)
+                                                Color: =ColorValue("#003087")
+                                                FillPortions: =1
+                                                Font: =Font.'Open Sans'
+                                                LayoutMaxHeight: =0
+                                                LayoutMaxWidth: =0
+                                                LayoutMinHeight: =16
+                                                LayoutMinWidth: =16
+                                                Size: =16
+                                                Text: |+
+                                                  =If(
+                                                      cmpSST.SelectedIndex = 0,
+                                                      "-",
+                                                      Text(cmpSST.Score)
+                                                  ) & " / 10"
+                                                Width: =Parent.Width
+                                    - cntMAScore:
+                                        Control: GroupContainer@1.3.0
+                                        Variant: AutoLayout
+                                        Properties:
+                                          DropShadow: =DropShadow.None
+                                          FillPortions: |+
+                                            =1.2
+                                          LayoutAlignItems: =LayoutAlignItems.Center
+                                          LayoutDirection: =LayoutDirection.Vertical
+                                          LayoutGap: =4
+                                          LayoutMaxHeight: =0
+                                          LayoutMaxWidth: =0
+                                          LayoutMinHeight: =16
+                                          LayoutMinWidth: =16
+                                          PaddingBottom: =8
+                                          PaddingLeft: =8
+                                          PaddingRight: =8
+                                          PaddingTop: =8
+                                          Width: =110
+                                        Children:
+                                          - lblScoreTitle_4:
+                                              Control: Label@2.5.1
+                                              Properties:
+                                                Align: =Align.Center
+                                                BorderColor: =RGBA(0, 18, 107, 1)
+                                                Color: =ColorValue("#003087")
+                                                FillPortions: =1
+                                                Font: =Font.'Open Sans'
+                                                FontWeight: =FontWeight.Semibold
+                                                LayoutMaxHeight: =0
+                                                LayoutMaxWidth: =0
+                                                LayoutMinHeight: =16
+                                                LayoutMinWidth: =16
+                                                Text: ="Medioambiente"
+                                                Width: =Parent.Width
+                                          - lblScoreDetails_4:
+                                              Control: Label@2.5.1
+                                              Properties:
+                                                Align: =Align.Center
+                                                BorderColor: =RGBA(0, 18, 107, 1)
+                                                Color: =ColorValue("#003087")
+                                                FillPortions: =1
+                                                Font: =Font.'Open Sans'
+                                                LayoutMaxHeight: =0
+                                                LayoutMaxWidth: =0
+                                                LayoutMinHeight: =16
+                                                LayoutMinWidth: =16
+                                                Size: =16
+                                                Text: |-
+                                                  =If(
+                                                      cmpMA.SelectedIndex = 0,
+                                                      "-",
+                                                      Text(cmpMA.Score)
+                                                  ) & " / 10"
+                                                Width: =Parent.Width
+                                    - cntEticaScore:
+                                        Control: GroupContainer@1.3.0
+                                        Variant: AutoLayout
+                                        Properties:
+                                          DropShadow: =DropShadow.None
+                                          FillPortions: |+
+                                            =1.2
+                                          LayoutAlignItems: =LayoutAlignItems.Center
+                                          LayoutDirection: =LayoutDirection.Vertical
+                                          LayoutGap: =4
+                                          LayoutMaxHeight: =0
+                                          LayoutMaxWidth: =0
+                                          LayoutMinHeight: =16
+                                          LayoutMinWidth: =16
+                                          PaddingBottom: =8
+                                          PaddingLeft: =8
+                                          PaddingRight: =8
+                                          PaddingTop: =8
+                                          Width: =110
+                                        Children:
+                                          - lblScoreTitle_5:
+                                              Control: Label@2.5.1
+                                              Properties:
+                                                Align: =Align.Center
+                                                BorderColor: =RGBA(0, 18, 107, 1)
+                                                Color: =ColorValue("#003087")
+                                                FillPortions: =1
+                                                Font: =Font.'Open Sans'
+                                                FontWeight: =FontWeight.Semibold
+                                                LayoutMaxHeight: =0
+                                                LayoutMaxWidth: =0
+                                                LayoutMinHeight: =16
+                                                LayoutMinWidth: =16
+                                                Text: ="Código de ética"
+                                                Width: =Parent.Width
+                                          - lblScoreDetails_5:
+                                              Control: Label@2.5.1
+                                              Properties:
+                                                Align: =Align.Center
+                                                BorderColor: =RGBA(0, 18, 107, 1)
+                                                Color: =ColorValue("#003087")
+                                                FillPortions: =1
+                                                Font: =Font.'Open Sans'
+                                                LayoutMaxHeight: =0
+                                                LayoutMaxWidth: =0
+                                                LayoutMinHeight: =16
+                                                LayoutMinWidth: =16
+                                                Size: =16
+                                                Text: =If(varEtica, "Yes", "No")
+                                                Width: =Parent.Width
+                              - conSummaryScores:
+                                  Control: GroupContainer@1.3.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    DropShadow: =DropShadow.None
+                                    FillPortions: =1.2
+                                    Height: =100
+                                    LayoutAlignItems: =LayoutAlignItems.Center
+                                    LayoutDirection: =LayoutDirection.Horizontal
+                                    LayoutGap: =8
+                                    LayoutMaxHeight: =0
+                                    LayoutMaxWidth: =0
+                                    LayoutMinHeight: =16
+                                    LayoutMinWidth: =16
+                                    PaddingBottom: =8
+                                    PaddingLeft: =8
+                                    PaddingRight: =8
+                                    PaddingTop: =8
+                                  Children:
+                                    - cntPlaceHolder:
+                                        Control: GroupContainer@1.3.0
+                                        Variant: AutoLayout
+                                        Properties:
+                                          DropShadow: =DropShadow.None
+                                          FillPortions: =3
+                                          LayoutAlignItems: =LayoutAlignItems.Center
+                                          LayoutDirection: =LayoutDirection.Vertical
+                                          LayoutMaxHeight: =0
+                                          LayoutMaxWidth: =0
+                                          LayoutMinHeight: =16
+                                          LayoutMinWidth: =16
+                                          PaddingBottom: =8
+                                          PaddingLeft: =8
+                                          PaddingRight: =8
+                                          PaddingTop: =8
+                                    - cntSubtotal:
+                                        Control: GroupContainer@1.3.0
+                                        Variant: AutoLayout
+                                        Properties:
+                                          DropShadow: =DropShadow.None
+                                          LayoutAlignItems: =LayoutAlignItems.Center
+                                          LayoutDirection: =LayoutDirection.Vertical
+                                          LayoutGap: =4
+                                          LayoutMaxHeight: =0
+                                          LayoutMaxWidth: =0
+                                          LayoutMinHeight: =16
+                                          LayoutMinWidth: =16
+                                          PaddingBottom: =8
+                                          PaddingLeft: =8
+                                          PaddingRight: =8
+                                          PaddingTop: =8
+                                          Width: =110
+                                        Children:
+                                          - lblSubtotal:
+                                              Control: Label@2.5.1
+                                              Properties:
+                                                Align: =Align.Center
+                                                BorderColor: =RGBA(0, 18, 107, 1)
+                                                Color: =ColorValue("#003087")
+                                                FillPortions: =1
+                                                Font: =Font.'Open Sans'
+                                                FontWeight: =FontWeight.Semibold
+                                                LayoutMaxHeight: =0
+                                                LayoutMaxWidth: =0
+                                                LayoutMinHeight: =16
+                                                LayoutMinWidth: =16
+                                                Size: =16
+                                                Text: ="Subtotal"
+                                                Width: =Parent.Width
+                                          - lblSubtotalValue:
+                                              Control: Label@2.5.1
+                                              Properties:
+                                                Align: =Align.Center
+                                                BorderColor: =RGBA(0, 18, 107, 1)
+                                                Color: =ColorValue("#003087")
+                                                FillPortions: =1
+                                                Font: =Font.'Open Sans'
+                                                FontWeight: =FontWeight.Semibold
+                                                LayoutMaxHeight: =0
+                                                LayoutMaxWidth: =0
+                                                LayoutMinHeight: =16
+                                                LayoutMinWidth: =16
+                                                Size: =20
+                                                Text: |-
+                                                  =If(
+                                                      cmpCalidadQ1.SelectedIndex = 0 ||
+                                                      cmpCalidadQ2.SelectedIndex = 0 ||
+                                                      cmpCalidadQ3.SelectedIndex = 0 ||
+                                                      cmpCalidadQ4.SelectedIndex = 0 ||
+                                                      cmpCalidadQ5.SelectedIndex = 0 ||
+                                                      cmpOportunidadQ1.SelectedIndex = 0 ||
+                                                      cmpGestionQ1.SelectedIndex = 0 ||
+                                                      cmpGestionQ2.SelectedIndex = 0 ||
+                                                      cmpSST.SelectedIndex = 0 ||
+                                                      cmpMA.SelectedIndex = 0,
+                                                      "-",
+                                                      Text(cmpCalidadQ1.Score + cmpCalidadQ2.Score + cmpCalidadQ3.Score + cmpCalidadQ4.Score + cmpCalidadQ5.Score + cmpOportunidadQ1.Score + cmpGestionQ1.Score + cmpGestionQ2.Score + cmpSST.Score + cmpMA.Score)
+                                                  )
+                                                Visible: =false
+                                                Width: =Parent.Width
+                                          - lblSubtotalValueDisplay:
+                                              Control: Label@2.5.1
+                                              Properties:
+                                                Align: =Align.Center
+                                                BorderColor: =RGBA(0, 18, 107, 1)
+                                                Color: =ColorValue("#003087")
+                                                FillPortions: =1
+                                                Font: =Font.'Open Sans'
+                                                FontWeight: =FontWeight.Semibold
+                                                LayoutMaxHeight: =0
+                                                LayoutMaxWidth: =0
+                                                LayoutMinHeight: =16
+                                                LayoutMinWidth: =16
+                                                Size: =20
+                                                Text: =lblSubtotalValue.Text & " / 100"
+                                                Width: =Parent.Width
+                                    - cntTotal:
+                                        Control: GroupContainer@1.3.0
+                                        Variant: AutoLayout
+                                        Properties:
+                                          DropShadow: =DropShadow.None
+                                          LayoutAlignItems: =LayoutAlignItems.Center
+                                          LayoutDirection: =LayoutDirection.Vertical
+                                          LayoutGap: =4
+                                          LayoutMaxHeight: =0
+                                          LayoutMaxWidth: =0
+                                          LayoutMinHeight: =16
+                                          LayoutMinWidth: =16
+                                          PaddingBottom: =8
+                                          PaddingLeft: =8
+                                          PaddingRight: =8
+                                          PaddingTop: =8
+                                          Width: =110
+                                        Children:
+                                          - lblTotal:
+                                              Control: Label@2.5.1
+                                              Properties:
+                                                Align: =Align.Center
+                                                BorderColor: =RGBA(0, 18, 107, 1)
+                                                Color: =ColorValue("#003087")
+                                                FillPortions: =1
+                                                Font: =Font.'Open Sans'
+                                                FontWeight: =FontWeight.Bold
+                                                LayoutMaxHeight: =0
+                                                LayoutMaxWidth: =0
+                                                LayoutMinHeight: =16
+                                                LayoutMinWidth: =16
+                                                Size: =24
+                                                Text: ="Total"
+                                                Width: =Parent.Width
+                                          - lblTotalValue:
+                                              Control: Label@2.5.1
+                                              Properties:
+                                                Align: =Align.Center
+                                                BorderColor: =RGBA(0, 18, 107, 1)
+                                                Color: =ColorValue("#003087")
+                                                FillPortions: =1
+                                                Font: =Font.'Open Sans'
+                                                FontWeight: =FontWeight.Bold
+                                                LayoutMaxHeight: =0
+                                                LayoutMaxWidth: =0
+                                                LayoutMinHeight: =16
+                                                LayoutMinWidth: =16
+                                                Size: =24
+                                                Text: =If(varEtica = true, "0", lblSubtotalValue.Text)
+                                                Visible: =false
+                                                Width: =Parent.Width
+                                          - lblTotalValueDisplay:
+                                              Control: Label@2.5.1
+                                              Properties:
+                                                Align: =Align.Center
+                                                BorderColor: =RGBA(0, 18, 107, 1)
+                                                Color: =ColorValue("#003087")
+                                                FillPortions: =1
+                                                Font: =Font.'Open Sans'
+                                                FontWeight: =FontWeight.Bold
+                                                LayoutMaxHeight: =0
+                                                LayoutMaxWidth: =0
+                                                LayoutMinHeight: =16
+                                                LayoutMinWidth: =16
+                                                Size: =24
+                                                Text: =lblTotalValue.Text & " / 100"
+                                                Width: =Parent.Width
+                        - lblResumenTitle:
+                            Control: Label@2.5.1
+                            Properties:
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              Color: =ColorValue("#003087")
+                              Font: =Font.'Segoe UI'
+                              FontWeight: =FontWeight.Bold
+                              Size: =22
+                              Text: ="Resumen"
+                              Width: =Parent.Width
+                  - lblBottomSpacer:
+                      Control: Label@2.5.1
+                      Properties:
+                        BorderColor: =RGBA(200, 200, 200, 1)
+                        Font: =Font.'Open Sans'
+                        Height: =20
+                        LayoutMaxHeight: =0
+                        LayoutMaxWidth: =0
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        PaddingBottom: =20
+                        PaddingLeft: =20
+                        PaddingRight: =20
+                        PaddingTop: =20
+                        Text: =""
+                        Width: =Parent.Width
+      - conHeader_1:
+          Control: GroupContainer@1.3.0
+          Variant: ManualLayout
+          Properties:
+            Fill: =ColorValue("#003087")
+            Height: =100
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            Width: =Parent.Width
+          Children:
+            - conHeaderContent_1:
+                Control: GroupContainer@1.3.0
+                Variant: AutoLayout
+                Properties:
+                  DropShadow: =DropShadow.None
+                  Height: =Parent.Height
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutGap: =20
+                  LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                  PaddingBottom: =8
+                  PaddingLeft: =40
+                  PaddingRight: =40
+                  PaddingTop: =8
+                  RadiusBottomLeft: =0
+                  RadiusBottomRight: =0
+                  RadiusTopLeft: =0
+                  RadiusTopRight: =0
+                  Width: =Parent.Width
+                Children:
+                  - imgLogo_1:
+                      Control: Image@2.2.3
+                      Properties:
+                        BorderColor: =RGBA(0, 18, 107, 1)
+                        Height: =150
+                        Image: =logo2
+                        Width: =150
+                        X: =60
+                  - conMenuGroup_1:
+                      Control: GroupContainer@1.3.0
+                      Variant: AutoLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutGap: =40
+                        LayoutJustifyContent: =LayoutJustifyContent.End
+                        LayoutMaxHeight: =0
+                        LayoutMaxWidth: =0
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        PaddingBottom: =8
+                        PaddingLeft: =8
+                        PaddingRight: =8
+                        PaddingTop: =8
+                        Width: =Parent.Width - imgLogo_1.Width
+                      Children:
+                        - btnEvaluateProviders_1:
+                            Control: CanvasComponent
+                            ComponentName: cmpHeaderButton
+                            Properties:
+                              Destination: =scrEvaluations
+                              Fill: =Color.Transparent
+                              Height: =80
+                              IsActive: =App.ActiveScreen = scrEvaluations
+                              Label: ="Evaluaciones"
+                              Width: =180
+                        - btnDashboard_1:
+                            Control: CanvasComponent
+                            ComponentName: cmpHeaderButton
+                            Properties:
+                              Destination: =scrDashboard
+                              Fill: =Color.Transparent
+                              Height: =80
+                              IsActive: =App.ActiveScreen = scrDashboard
+                              Label: ="Dashboard"
+                              Width: =180
+      - conSubmitModalOverlay:
+          Control: GroupContainer@1.3.0
+          Variant: ManualLayout
+          Properties:
+            Fill: =RGBA(0,0,0,0.45)
+            Height: =Parent.Height
+            Visible: =varShowSubmitModal
+            Width: =Parent.Width
+          Children:
+            - conSubmitModalCard:
+                Control: GroupContainer@1.3.0
+                Variant: ManualLayout
+                Properties:
+                  BorderColor: =RGBA(220,220,220,1)
+                  BorderThickness: =1
+                  Fill: =RGBA(255,255,255,1)
+                  Height: =Min(820, Parent.Height - 80)
+                  RadiusBottomLeft: =12
+                  RadiusBottomRight: =12
+                  RadiusTopLeft: =12
+                  RadiusTopRight: =12
+                  Width: =Min(720, Parent.Width - 60)
+                  X: =(Parent.Width - Self.Width)/2
+                  Y: =(Parent.Height - Self.Height)/2
+                Children:
+                  - conFooter_1:
+                      Control: GroupContainer@1.3.0
+                      Variant: AutoLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        Height: =60
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutGap: =12
+                        LayoutJustifyContent: =LayoutJustifyContent.End
+                        PaddingBottom: =8
+                        PaddingLeft: =8
+                        PaddingRight: =8
+                        PaddingTop: =8
+                        Width: =Parent.Width
+                        Y: =Parent.Height - Self.Height
+                      Children:
+                        - cmpModalCancel:
+                            Control: CanvasComponent
+                            ComponentName: cmpSecondaryButton
+                            Properties:
+                              Fill: =Color.Transparent
+                              Height: =48
+                              IsEnabled: =true
+                              OnSelectAction: |
+                                =Set(varShowSubmitModal, false);
+                              Text: ="Cancelar"
+                              ToolTip: =""
+                              Width: =220
+                        - cmpModalReject:
+                            Control: CanvasComponent
+                            ComponentName: cmpPrimaryButton
+                            Properties:
+                              Fill: =Color.Transparent
+                              Height: =48
+                              IsEnabled: =true
+                              OnSelectAction: |-
+                                =Select(btnDoReject);
+                                Set(varShowSubmitModal, false);
+                              Text: ="Rechazar"
+                              ToolTip: =""
+                              Visible: =varCanApprove && varSubmitSummary.Action = "reject"
+                              Width: =220
+                        - cmpModalApprove:
+                            Control: CanvasComponent
+                            ComponentName: cmpPrimaryButton
+                            Properties:
+                              Fill: =Color.Transparent
+                              Height: =48
+                              IsEnabled: =true
+                              OnSelectAction: |-
+                                =Select(btnDoApprove);
+                                Set(varShowSubmitModal, false);
+                              Text: ="Aprobar"
+                              ToolTip: =""
+                              Visible: =varCanApprove && varSubmitSummary.Action = "approve"
+                              Width: =220
+                        - cmpModalSubmit:
+                            Control: CanvasComponent
+                            ComponentName: cmpPrimaryButton
+                            Properties:
+                              Fill: =Color.Transparent
+                              Height: =48
+                              IsEnabled: =true
+                              OnSelectAction: |-
+                                =Select(btnDoSubmit);
+                                Set(varShowSubmitModal, false);
+                              Text: ="Enviar"
+                              ToolTip: =""
+                              Visible: =varCanEditMA || varCanEditSST || varCanEditTecnico
+                              Width: =220
+                  - conModalBody:
+                      Control: GroupContainer@1.3.0
+                      Variant: AutoLayout
+                      Properties:
+                        Height: =Parent.Height - 140
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutGap: =8
+                        LayoutOverflowY: =LayoutOverflow.Scroll
+                        PaddingBottom: =8
+                        PaddingLeft: =8
+                        PaddingRight: =8
+                        PaddingTop: =8
+                        RadiusBottomLeft: =10
+                        RadiusBottomRight: =10
+                        RadiusTopLeft: =10
+                        RadiusTopRight: =10
+                        Width: =Parent.Width - 40
+                        X: =20
+                        Y: =70
+                      Children:
+                        - conModalSummary:
+                            Control: GroupContainer@1.3.0
+                            Variant: AutoLayout
+                            Properties:
+                              BorderColor: =ColorValue("#003087")
+                              BorderThickness: =1
+                              FillPortions: =0
+                              Height: =80
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutOverflowY: =LayoutOverflow.Scroll
+                              RadiusBottomLeft: =10
+                              RadiusBottomRight: =10
+                              RadiusTopLeft: =10
+                              RadiusTopRight: =10
+                              Visible: =varCanApprove
+                              Width: =Parent.Width - 40
+                            Children:
+                              - lblModalSummary:
+                                  Control: Label@2.5.1
+                                  Properties:
+                                    BorderColor: =RGBA(0, 18, 107, 1)
+                                    Color: =ColorValue("#003087")
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Text: ="Resumen de evaluación"
+                                    Width: =Parent.Width
+                              - conSummaryData:
+                                  Control: GroupContainer@1.3.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.SetByContainer
+                                    FillPortions: =0
+                                    Height: =40
+                                    LayoutAlignItems: =LayoutAlignItems.Center
+                                    LayoutDirection: =LayoutDirection.Horizontal
+                                    Width: =Parent.Width
+                                    X: =20
+                                    Y: |
+                                      =lblModalSummary.Y + lblModalSummary.Height
+                                  Children:
+                                    - lblModalSubTotal:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          BorderColor: =RGBA(0, 18, 107, 1)
+                                          Color: =ColorValue("#003087")
+                                          FillPortions: =1
+                                          Font: =Font.'Open Sans'
+                                          LayoutMaxHeight: =0
+                                          LayoutMaxWidth: =0
+                                          LayoutMinHeight: =16
+                                          LayoutMinWidth: =16
+                                          Text: |-
+                                            ="Subtotal: " & varSubmitSummary.SubtotalText
+                                          Width: =200
+                                    - lblModalTotal:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          BorderColor: =RGBA(0, 18, 107, 1)
+                                          Color: =ColorValue("#003087")
+                                          FillPortions: =1
+                                          Font: =Font.'Open Sans'
+                                          LayoutMaxHeight: =0
+                                          LayoutMaxWidth: =0
+                                          LayoutMinHeight: =16
+                                          LayoutMinWidth: =16
+                                          Text: |-
+                                            ="Total: " & varSubmitSummary.TotalText
+                                          Width: =200
+                        - conModalTecnico:
+                            Control: GroupContainer@1.3.0
+                            Variant: AutoLayout
+                            Properties:
+                              BorderColor: =ColorValue("#003087")
+                              BorderThickness: =1
+                              FillPortions: =0
+                              Height: =lblModalTecnico.Height + conModalTecnicoDetails.Height
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutOverflowY: =LayoutOverflow.Scroll
+                              RadiusBottomLeft: =10
+                              RadiusBottomRight: =10
+                              RadiusTopLeft: =10
+                              RadiusTopRight: =10
+                              Visible: =varCanEditTecnico || varCanApprove
+                              Width: =Parent.Width - 40
+                            Children:
+                              - lblModalTecnico:
+                                  Control: Label@2.5.1
+                                  Properties:
+                                    BorderColor: =RGBA(0, 18, 107, 1)
+                                    Color: =ColorValue("#003087")
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Text: ="Técnico"
+                                    Width: =Parent.Width
+                              - conModalTecnicoDetails:
+                                  Control: GroupContainer@1.3.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.SetByContainer
+                                    FillPortions: =0
+                                    Height: =Max(lblTecnicoDetails1.Height, lblTecnicoDetails2.Height, lblTecnicoObservation.Height)
+                                    LayoutDirection: =LayoutDirection.Horizontal
+                                    LayoutGap: =8
+                                    Width: =Parent.Width
+                                    X: =20
+                                    Y: |
+                                      =lblModalTecnico.Y + lblModalTecnico.Height
+                                  Children:
+                                    - lblTecnicoDetails1:
+                                        Control: HtmlViewer@2.1.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =ColorValue("#003087")
+                                          Font: =Font.'Open Sans'
+                                          Height: =
+                                          HtmlText: |+
+                                            ="<div style='border-right:2px solid #CFCFCF; padding-right:12px; height:100%;'>
+                                              <table style='width:100%; border-collapse:collapse;'>
+                                                <tr>
+                                                  <td style='width:120px;'>Calidad Q1:</td>
+                                                  <td>" & varSubmitSummary.CalidadQ1 & "</td>
+                                                </tr>
+                                                <tr>
+                                                  <td>Calidad Q2:</td>
+                                                  <td>" & varSubmitSummary.CalidadQ2 & "</td>
+                                                </tr>
+                                                <tr>
+                                                  <td>Calidad Q3:</td>
+                                                  <td>" & varSubmitSummary.CalidadQ3 & "</td>
+                                                </tr>
+                                                <tr>
+                                                  <td>Calidad Q4:</td>
+                                                  <td>" & varSubmitSummary.CalidadQ4 & "</td>
+                                                </tr>
+                                                <tr>
+                                                  <td>Calidad Q5:</td>
+                                                  <td>" & varSubmitSummary.CalidadQ5 & "</td>
+                                                </tr>
+                                              </table>
+                                            </div>"
+                                          LayoutMaxHeight: =0
+                                          LayoutMaxWidth: =0
+                                          LayoutMinHeight: =16
+                                          LayoutMinWidth: =16
+                                          Width: =170
+                                    - lblTecnicoDetails2:
+                                        Control: HtmlViewer@2.1.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =ColorValue("#003087")
+                                          Font: =Font.'Open Sans'
+                                          Height: =
+                                          HtmlText: |
+                                            ="<div style='border-right:2px solid #CFCFCF; padding-right:12px; height:100%;'>
+                                            <table style='width:100%; border-collapse:collapse;'>
+                                              <tr>
+                                                <td style='width:150px;'>Oportunidad Q1:</td>
+                                                <td>" & varSubmitSummary.OportunidadQ1 & "</td>
+                                              </tr>
+                                              <tr>
+                                                <td>Gestion Q1:</td>
+                                                <td>" & varSubmitSummary.GestionQ1 & "</td>
+                                              </tr>
+                                              <tr>
+                                                <td>Gestion Q2:</td>
+                                                <td>" & varSubmitSummary.GestionQ2 & "</td>
+                                              </tr>
+                                              <tr>
+                                                <td>Código de ética:</td>
+                                                <td>" & varSubmitSummary.EticaFlag & "</td>
+                                              </tr>
+                                              <tr>
+                                                <td>Medioambiente:</td>
+                                                <td>" & varSubmitSummary.MARequiredFlag & "</td>
+                                              </tr>
+                                            </table></div>"
+                                          LayoutMaxHeight: =0
+                                          LayoutMaxWidth: =0
+                                          LayoutMinHeight: =16
+                                          LayoutMinWidth: =16
+                                          Width: =220
+                                    - lblTecnicoObservation:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          AutoHeight: =true
+                                          BorderColor: =RGBA(0, 18, 107, 1)
+                                          Color: =ColorValue("#003087")
+                                          Font: =Font.'Open Sans'
+                                          LayoutMaxHeight: =0
+                                          LayoutMaxWidth: =0
+                                          LayoutMinHeight: =16
+                                          LayoutMinWidth: =16
+                                          LineHeight: =1.5
+                                          Text: |-
+                                            ="Observación" & Char(10) & 
+                                            If(IsBlank(varSubmitSummary.ObsTecnico), Char(10),varSubmitSummary.ObsTecnico)
+                                          Width: =Parent.Width - lblTecnicoDetails1.Width - lblTecnicoDetails2.Width - 3*Parent.LayoutGap
+                        - conModalSST:
+                            Control: GroupContainer@1.3.0
+                            Variant: AutoLayout
+                            Properties:
+                              BorderColor: =ColorValue("#003087")
+                              BorderThickness: =1
+                              FillPortions: =0
+                              Height: =lblModalSST.Height + conModalSSTDetails.Height
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutOverflowY: =LayoutOverflow.Scroll
+                              RadiusBottomLeft: =10
+                              RadiusBottomRight: =10
+                              RadiusTopLeft: =10
+                              RadiusTopRight: =10
+                              Visible: =varCanEditSST || varCanApprove
+                              Width: =Parent.Width - 40
+                            Children:
+                              - lblModalSST:
+                                  Control: Label@2.5.1
+                                  Properties:
+                                    BorderColor: =RGBA(0, 18, 107, 1)
+                                    Color: =ColorValue("#003087")
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Text: ="Salud y Seguridad en el Trabajo (SST)"
+                                    Width: =Parent.Width
+                              - conModalSSTDetails:
+                                  Control: GroupContainer@1.3.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.SetByContainer
+                                    FillPortions: =0
+                                    Height: =Max(lblSSTDetails.Height, lblSSTObservation.Height)
+                                    LayoutDirection: =LayoutDirection.Horizontal
+                                    LayoutGap: =8
+                                    Width: =Parent.Width
+                                    X: =20
+                                    Y: |
+                                      =lblModalSST.Y + lblModalSST.Height
+                                  Children:
+                                    - lblSSTDetails:
+                                        Control: HtmlViewer@2.1.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =ColorValue("#003087")
+                                          Font: =Font.'Open Sans'
+                                          Height: =
+                                          HtmlText: |
+                                            ="<div style='border-right:2px solid #CFCFCF; padding-right:12px;'>
+                                              <table style='width:100%; border-collapse:collapse;'>
+                                                <tr>
+                                                  <td style='width:120px;'>SST Q1:</td>
+                                                  <td>" & varSubmitSummary.SSTQ1 & "</td>
+                                                </tr>
+                                              </table>
+                                            </div>"
+                                          LayoutMaxHeight: =0
+                                          LayoutMaxWidth: =0
+                                          LayoutMinHeight: =16
+                                          LayoutMinWidth: =16
+                                          Width: =170
+                                    - lblSSTObservation:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          AutoHeight: =true
+                                          BorderColor: =RGBA(0, 18, 107, 1)
+                                          Color: =ColorValue("#003087")
+                                          Font: =Font.'Open Sans'
+                                          LayoutMaxHeight: =0
+                                          LayoutMaxWidth: =0
+                                          LayoutMinHeight: =16
+                                          LayoutMinWidth: =16
+                                          LineHeight: =1.5
+                                          Text: |-
+                                            ="Observación" & Char(10) & 
+                                            If(IsBlank(varSubmitSummary.ObsSST), Char(10),varSubmitSummary.ObsSST)
+                                          Width: =Parent.Width - lblSSTDetails.Width - 2*Parent.LayoutGap
+                        - conModalMA:
+                            Control: GroupContainer@1.3.0
+                            Variant: AutoLayout
+                            Properties:
+                              BorderColor: =ColorValue("#003087")
+                              BorderThickness: =1
+                              FillPortions: =0
+                              Height: =lblModalMA.Height + conModalMADetails.Height
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutOverflowY: =LayoutOverflow.Scroll
+                              RadiusBottomLeft: =10
+                              RadiusBottomRight: =10
+                              RadiusTopLeft: =10
+                              RadiusTopRight: =10
+                              Visible: =varCanEditMA || varCanApprove
+                              Width: =Parent.Width - 40
+                            Children:
+                              - lblModalMA:
+                                  Control: Label@2.5.1
+                                  Properties:
+                                    BorderColor: =RGBA(0, 18, 107, 1)
+                                    Color: =ColorValue("#003087")
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Text: ="Medio Ambiente (MA)"
+                                    Width: =Parent.Width
+                              - conModalMADetails:
+                                  Control: GroupContainer@1.3.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.SetByContainer
+                                    FillPortions: =0
+                                    Height: =Max(lblMADetails.Height, lblMAObservation.Height)
+                                    LayoutDirection: =LayoutDirection.Horizontal
+                                    LayoutGap: =8
+                                    Width: =Parent.Width
+                                    X: =20
+                                    Y: |
+                                      =lblModalMA.Y + lblModalMA.Height
+                                  Children:
+                                    - lblMADetails:
+                                        Control: HtmlViewer@2.1.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =ColorValue("#003087")
+                                          Font: =Font.'Open Sans'
+                                          Height: =
+                                          HtmlText: |
+                                            ="<div style='border-right:2px solid #CFCFCF; padding-right:12px;'>
+                                              <table style='width:100%; border-collapse:collapse;'>
+                                                <tr>
+                                                  <td style='width:120px;'>MA Q1:</td>
+                                                  <td>" & varSubmitSummary.MAQ1 & "</td>
+                                                </tr>
+                                              </table>
+                                            </div>"
+                                          LayoutMaxHeight: =0
+                                          LayoutMaxWidth: =0
+                                          LayoutMinHeight: =16
+                                          LayoutMinWidth: =16
+                                          Width: =170
+                                    - lblMAObservation:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          AutoHeight: =true
+                                          BorderColor: =RGBA(0, 18, 107, 1)
+                                          Color: =ColorValue("#003087")
+                                          Font: =Font.'Open Sans'
+                                          LayoutMaxHeight: =0
+                                          LayoutMaxWidth: =0
+                                          LayoutMinHeight: =16
+                                          LayoutMinWidth: =16
+                                          LineHeight: =1.5
+                                          Text: |-
+                                            ="Observación" & Char(10) & 
+                                            If(IsBlank(varSubmitSummary.ObsMA), Char(10),varSubmitSummary.ObsMA)
+                                          Width: =Parent.Width - lblMADetails.Width - 2*Parent.LayoutGap
+                        - conModalJefeArea:
+                            Control: GroupContainer@1.3.0
+                            Variant: AutoLayout
+                            Properties:
+                              BorderColor: =ColorValue("#003087")
+                              BorderThickness: =1
+                              FillPortions: =0
+                              Height: =lblModalJefeArea.Height + conModalJefeAreaDetails.Height
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutOverflowY: =LayoutOverflow.Scroll
+                              RadiusBottomLeft: =10
+                              RadiusBottomRight: =10
+                              RadiusTopLeft: =10
+                              RadiusTopRight: =10
+                              Visible: =varCanApprove
+                              Width: =Parent.Width - 40
+                            Children:
+                              - lblModalJefeArea:
+                                  Control: Label@2.5.1
+                                  Properties:
+                                    BorderColor: =RGBA(0, 18, 107, 1)
+                                    Color: =ColorValue("#003087")
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Text: ="Jefe Área"
+                                    Width: =Parent.Width
+                              - conModalJefeAreaDetails:
+                                  Control: GroupContainer@1.3.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.SetByContainer
+                                    FillPortions: =0
+                                    Height: =lblJefeAreaObservation.Height
+                                    LayoutDirection: =LayoutDirection.Horizontal
+                                    LayoutGap: =8
+                                    Width: =Parent.Width
+                                    X: =20
+                                    Y: |
+                                      =lblModalJefeArea.Y + lblModalJefeArea.Height
+                                  Children:
+                                    - lblJefeAreaObservation:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          AutoHeight: =true
+                                          BorderColor: =RGBA(0, 18, 107, 1)
+                                          Color: =ColorValue("#003087")
+                                          Font: =Font.'Open Sans'
+                                          LayoutMaxHeight: =0
+                                          LayoutMaxWidth: =0
+                                          LayoutMinHeight: =16
+                                          LayoutMinWidth: =16
+                                          LineHeight: =1.5
+                                          Text: |
+                                            ="Observación" & Char(10) & 
+                                            If(IsBlank(varSubmitSummary.ObsJefeArea), Char(10),varSubmitSummary.ObsJefeArea)
+                                          Width: =Parent.Width
+                  - icoModalClose:
+                      Control: Classic/Icon@2.5.0
+                      Properties:
+                        BorderColor: =RGBA(0, 18, 107, 1)
+                        Color: =RGBA(0, 18, 107, 1)
+                        Height: =32
+                        Icon: =Icon.Cancel
+                        OnSelect: =Set(varShowSubmitModal, false)
+                        Width: =32
+                        X: =conSubmitModalCard.Width - 50
+                        Y: =16
+                  - lblModalTitle:
+                      Control: Label@2.5.1
+                      Properties:
+                        BorderColor: =RGBA(0, 18, 107, 1)
+                        Color: =ColorValue("#003087")
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Semibold
+                        Size: =20
+                        Text: ="Confirmar respuesta"
+                        Width: =300
+                        X: =20
+                        Y: =20

@@ -1,0 +1,48 @@
+# ************************************************************************************************
+# Warning: YAML source code for Canvas Apps should only be used to review changes made within Power Apps Studio and for minor edits (Preview).
+# Use the maker portal to create and edit your Power Apps.
+# 
+# The schema file for Canvas Apps is available at https://go.microsoft.com/fwlink/?linkid=2304907
+# 
+# For more information, visit https://go.microsoft.com/fwlink/?linkid=2292623
+# ************************************************************************************************
+ComponentDefinitions:
+  cmpSectionTitle:
+    DefinitionType: CanvasComponent
+    CustomProperties:
+      ShowSeparator:
+        PropertyKind: Input
+        DisplayName: ShowSeparator
+        Description: A custom property
+        DataType: Boolean
+        Default: =true
+      Text:
+        PropertyKind: Input
+        DisplayName: Text
+        Description: A custom property
+        DataType: Text
+        Default: ="Section Title"
+    Properties:
+      Height: =30
+      Width: =500
+    Children:
+      - rectSeparator:
+          Control: Rectangle@2.3.0
+          Properties:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            Fill: =ColorValue("#003087")
+            Height: =2
+            Visible: =Parent.ShowSeparator
+            Width: =Parent.Width
+            Y: =lblTitle.Y + lblTitle.Height + 4
+      - lblTitle:
+          Control: Label@2.5.1
+          Properties:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            Color: =ColorValue("#003087")
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Bold
+            Height: =28
+            Size: =20
+            Text: =Parent.Text
+            Width: =Parent.Width

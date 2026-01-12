@@ -1,0 +1,182 @@
+# ************************************************************************************************
+# Warning: YAML source code for Canvas Apps should only be used to review changes made within Power Apps Studio and for minor edits (Preview).
+# Use the maker portal to create and edit your Power Apps.
+# 
+# The schema file for Canvas Apps is available at https://go.microsoft.com/fwlink/?linkid=2304907
+# 
+# For more information, visit https://go.microsoft.com/fwlink/?linkid=2292623
+# ************************************************************************************************
+ComponentDefinitions:
+  cmpYesNoQuestion:
+    DefinitionType: CanvasComponent
+    CustomProperties:
+      ContentHeight:
+        PropertyKind: Output
+        DisplayName: ContentHeight
+        Description: A custom property
+        DataType: Number
+      Enable:
+        PropertyKind: Input
+        DisplayName: Enable
+        Description: A custom property
+        DataType: Boolean
+        Default: =true
+      Label:
+        PropertyKind: Input
+        DisplayName: Label
+        Description: A custom property
+        DataType: Text
+        Default: ="Label"
+      OnSelectNo:
+        PropertyKind: Event
+        DisplayName: OnSelectNo
+        Description: A custom property
+        ReturnType: None
+        Default: =
+      OnSelectYes:
+        PropertyKind: Event
+        DisplayName: OnSelectYes
+        Description: A custom property
+        ReturnType: None
+        Default: =
+      Question:
+        PropertyKind: Input
+        DisplayName: Question
+        Description: A custom property
+        DataType: Text
+        Default: ="Chose si or no?"
+      SelectedValue:
+        PropertyKind: Input
+        DisplayName: SelectedValue
+        Description: A custom property
+        DataType: Boolean
+        Default: =true
+    Properties:
+      ContentHeight: =cntRow.Y + cntRow.Height + 8
+      Height: =120
+      Width: =600
+    Children:
+      - lblYesNoLabel:
+          Control: Label@2.5.1
+          Properties:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            Color: =ColorValue("#003087")
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Bold
+            Size: =20
+            Text: =Parent.Label
+            Width: =Parent.Width
+            Y: =8
+      - cntRow:
+          Control: GroupContainer@1.3.0
+          Variant: AutoLayout
+          Properties:
+            DropShadow: =DropShadow.None
+            Height: =Max(lblQuestion.Height, cntButtons.Height)
+            LayoutDirection: =LayoutDirection.Horizontal
+            LayoutGap: =16
+            Width: =Parent.Width
+            Y: =lblYesNoLabel.Y + lblYesNoLabel.Height + 8
+          Children:
+            - lblQuestion:
+                Control: Label@2.5.1
+                Properties:
+                  AutoHeight: =true
+                  BorderColor: =RGBA(0, 18, 107, 1)
+                  Color: =ColorValue("#003087")
+                  Font: =Font.'Segoe UI'
+                  LayoutMaxHeight: =0
+                  LayoutMaxWidth: =0
+                  LayoutMinHeight: =16
+                  LayoutMinWidth: =16
+                  Size: =15
+                  Text: =cmpYesNoQuestion.Question
+                  Width: =cntRow.Width - cntButtons.Width - cntRow.LayoutGap
+            - cntButtons:
+                Control: GroupContainer@1.3.0
+                Variant: AutoLayout
+                Properties:
+                  AlignInContainer: =AlignInContainer.SetByContainer
+                  FillPortions: =0
+                  Height: =60
+                  LayoutAlignItems: =LayoutAlignItems.End
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutGap: =8
+                  LayoutMaxHeight: =0
+                  LayoutMaxWidth: =0
+                  LayoutMinHeight: =16
+                  LayoutMinWidth: =16
+                  Width: =220
+                Children:
+                  - btnYes:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        BorderColor: =ColorFade(Self.Fill, -15%)
+                        Color: |-
+                          =If(
+                              cmpYesNoQuestion.SelectedValue = true,
+                              Color.White,
+                              ColorValue("#003087")
+                          )
+                        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                        Fill: |-
+                          =If(
+                              cmpYesNoQuestion.SelectedValue = true,
+                              ColorValue("#003087"),
+                              ColorValue("#E5F0FF")
+                          )
+                        Font: =Font.'Open Sans'
+                        Height: =60
+                        HoverBorderColor: =Self.BorderColor
+                        HoverColor: =If(cmpYesNoQuestion.Enable, RGBA(255, 255, 255, 1), Self.Color)
+                        HoverFill: =If(cmpYesNoQuestion.Enable, ColorValue("#003087"), Self.Fill)
+                        LayoutMaxHeight: =0
+                        LayoutMaxWidth: =0
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        OnSelect: =If(cmpYesNoQuestion.Enable, cmpYesNoQuestion.OnSelectYes())
+                        PressedBorderColor: =Self.Fill
+                        PressedColor: =If(cmpYesNoQuestion.Enable, Self.Fill, Color.White)
+                        PressedFill: =If(cmpYesNoQuestion.Enable, Self.Color)
+                        RadiusBottomLeft: =8
+                        RadiusBottomRight: =8
+                        RadiusTopLeft: =8
+                        RadiusTopRight: =8
+                        Text: ="Sí"
+                        Width: =100
+                  - btnNo:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        BorderColor: =ColorFade(Self.Fill, -15%)
+                        Color: |-
+                          =If(
+                              cmpYesNoQuestion.SelectedValue = false,
+                              Color.White,
+                              ColorValue("#003087")
+                          )
+                        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                        Fill: |-
+                          =If(
+                                  cmpYesNoQuestion.SelectedValue = false,
+                                  ColorValue("#003087"),
+                                  ColorValue("#E5F0FF")
+                              )
+                        Font: =Font.'Open Sans'
+                        Height: =60
+                        HoverBorderColor: =Self.BorderColor
+                        HoverColor: =If(cmpYesNoQuestion.Enable, RGBA(255, 255, 255, 1), Self.Color)
+                        HoverFill: =If(cmpYesNoQuestion.Enable, ColorValue("#003087"), Self.Fill)
+                        LayoutMaxHeight: =0
+                        LayoutMaxWidth: =0
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        OnSelect: =If(cmpYesNoQuestion.Enable, cmpYesNoQuestion.OnSelectNo())
+                        PressedBorderColor: =If(cmpYesNoQuestion.Enable, Self.Fill)
+                        PressedColor: =If(cmpYesNoQuestion.Enable, Self.Fill)
+                        PressedFill: =If(cmpYesNoQuestion.Enable, Self.Color)
+                        RadiusBottomLeft: =8
+                        RadiusBottomRight: =8
+                        RadiusTopLeft: =8
+                        RadiusTopRight: =8
+                        Text: ="No"
+                        Width: =100

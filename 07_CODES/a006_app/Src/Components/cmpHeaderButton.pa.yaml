@@ -1,0 +1,69 @@
+# ************************************************************************************************
+# Warning: YAML source code for Canvas Apps should only be used to review changes made within Power Apps Studio and for minor edits (Preview).
+# Use the maker portal to create and edit your Power Apps.
+# 
+# The schema file for Canvas Apps is available at https://go.microsoft.com/fwlink/?linkid=2304907
+# 
+# For more information, visit https://go.microsoft.com/fwlink/?linkid=2292623
+# ************************************************************************************************
+ComponentDefinitions:
+  cmpHeaderButton:
+    DefinitionType: CanvasComponent
+    CustomProperties:
+      Destination:
+        PropertyKind: Input
+        DisplayName: Destination
+        Description: A custom property
+        DataType: Screen
+        Default: =App.ActiveScreen
+      IsActive:
+        PropertyKind: Input
+        DisplayName: IsActive
+        Description: A custom property
+        DataType: Boolean
+        Default: =true
+      Label:
+        PropertyKind: Input
+        DisplayName: Label
+        Description: A custom property
+        DataType: Text
+        Default: ="Text"
+    Properties:
+      Fill: =Color.Transparent
+      Height: =80
+      Width: =180
+    Children:
+      - btnNavButton:
+          Control: Classic/Button@2.2.0
+          Properties:
+            BorderColor: =ColorFade(Self.Fill, -15%)
+            Color: '=If(Parent.IsActive, RGBA(0, 51, 102, 1), Color.White) '
+            DisabledBorderColor: =RGBA(166, 166, 166, 1)
+            Fill: =If(cmpHeaderButton.IsActive, ColorValue("#009AFE"),  Color.Transparent)
+            Font: =Font.'Segoe UI'
+            FontWeight: =If(Parent.IsActive, FontWeight.Bold, FontWeight.Semibold)
+            Height: =Parent.Height
+            HoverBorderColor: =ColorFade(Self.BorderColor, 20%)
+            HoverColor: =RGBA(0, 134, 208, 1)
+            HoverFill: =RGBA(245, 245, 245, 1)
+            OnSelect: =Navigate(Parent.Destination)
+            PressedBorderColor: =Self.Fill
+            PressedColor: =Self.Fill
+            PressedFill: =Self.Color
+            RadiusBottomLeft: =15
+            RadiusBottomRight: =15
+            RadiusTopLeft: =15
+            RadiusTopRight: |+
+              =15
+            Text: =Parent.Label
+            Width: =Parent.Width
+      - iconNavButton:
+          Control: Classic/Icon@2.5.0
+          Properties:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            Color: '=If(Parent.IsActive, Color.Transparent, Color.White) '
+            Height: =20
+            Icon: =Icon.ChevronRight
+            Width: =20
+            X: =160
+            Y: =30

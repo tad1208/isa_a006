@@ -1,0 +1,345 @@
+# ************************************************************************************************
+# Warning: YAML source code for Canvas Apps should only be used to review changes made within Power Apps Studio and for minor edits (Preview).
+# Use the maker portal to create and edit your Power Apps.
+# 
+# The schema file for Canvas Apps is available at https://go.microsoft.com/fwlink/?linkid=2304907
+# 
+# For more information, visit https://go.microsoft.com/fwlink/?linkid=2292623
+# ************************************************************************************************
+ComponentDefinitions:
+  cmpSubCriteria:
+    DefinitionType: CanvasComponent
+    CustomProperties:
+      ContentHeight:
+        PropertyKind: Output
+        DisplayName: ContentHeight
+        Description: A custom property
+        DataType: Number
+      Enable:
+        PropertyKind: Input
+        DisplayName: Enable
+        Description: A custom property
+        DataType: Boolean
+        Default: =true
+      OnSelectOption1:
+        PropertyKind: Event
+        DisplayName: OnSelectOption1
+        Description: A custom property
+        ReturnType: None
+        Default: =
+      OnSelectOption2:
+        PropertyKind: Event
+        DisplayName: OnSelectOption2
+        Description: A custom property
+        ReturnType: None
+        Default: =
+      OnSelectOption3:
+        PropertyKind: Event
+        DisplayName: OnSelectOption3
+        Description: A custom property
+        ReturnType: None
+        Default: =
+      Option1Text:
+        PropertyKind: Input
+        DisplayName: Option1Text
+        Description: A custom property
+        DataType: Text
+        Default: ="El contratista durante la ejecución del contrato cumplió con"
+      Option2Text:
+        PropertyKind: Input
+        DisplayName: Option2Text
+        Description: A custom property
+        DataType: Text
+        Default: ="El contratista durante la ejecución del contrato presento algunos incumplimientos con los temas administrativos y de terreno de Seguridad y Salud en el Trabajo"
+      Option3Text:
+        PropertyKind: Input
+        DisplayName: Option3Text
+        Description: A custom property
+        DataType: Text
+        Default: ="El contratista durante la ejecución del contrato presento incumplimientos reiterativos con temas administrativos y de terreno de Seguridad y Salud en el Trabajo"
+      OptionCount:
+        PropertyKind: Input
+        DisplayName: OptionCount
+        Description: A custom property
+        DataType: Number
+        Default: =3
+      Score:
+        PropertyKind: Output
+        DisplayName: Score
+        Description: A custom property
+        DataType: Number
+      SelectedIndex:
+        PropertyKind: Input
+        DisplayName: SelectedIndex
+        Description: A custom property
+        DataType: Number
+        Default: =0
+      TitleText:
+        PropertyKind: Input
+        DisplayName: TitleText
+        Description: A custom property
+        DataType: Text
+        Default: ="sub criteria"
+      TotalPoints:
+        PropertyKind: Input
+        DisplayName: TotalPoints
+        Description: A custom property
+        DataType: Number
+        Default: =100
+    Properties:
+      ContentHeight: |-
+        =If(
+            Self.OptionCount = 2,
+            cntOpt2.Y + cntOpt2.Height + 8,
+            cntOpt3.Y + cntOpt3.Height + 8
+        )
+      Height: =300
+      Score: |+
+        =If(
+            Self.SelectedIndex = 0,
+            Blank(),
+            If(
+                Self.OptionCount = 3,
+                Switch(
+                    Self.SelectedIndex,
+                    1, Self.TotalPoints * 1,
+                    2, Self.TotalPoints * 0.5,
+                    3, 0
+                ),
+                If(
+                    Self.OptionCount = 2,
+                    Switch(
+                        Self.SelectedIndex,
+                        1, Self.TotalPoints * 1,
+                        2, 0
+                    )
+                )
+            )
+        )
+      Width: =800
+    Children:
+      - cntBody:
+          Control: GroupContainer@1.3.0
+          Variant: ManualLayout
+          Properties:
+            DropShadow: =DropShadow.None
+            Height: |-
+              =If(
+                      Parent.OptionCount = 2,
+                      cntOpt2.Y + cntOpt2.Height + 8,
+                      cntOpt3.Y + cntOpt3.Height + 8
+                  )
+            Width: =Parent.Width
+          Children:
+            - cntScore:
+                Control: GroupContainer@1.3.0
+                Variant: ManualLayout
+                Properties:
+                  BorderColor: =ColorValue("#003087")
+                  BorderThickness: =1
+                  Height: |-
+                    =If(
+                        cmpSubCriteria.OptionCount = 2,
+                        (cntOpt2.Y + cntOpt2.Height) - cntScore.Y,
+                        // nếu 3 option
+                        (cntOpt3.Y + cntOpt3.Height) - cntScore.Y
+                    )
+                  Width: =100
+                  X: =Parent.Width - cntScore.Width-1
+                  Y: =lblCriteriaTitle.Y + lblCriteriaTitle.Height
+                Children:
+                  - lblScore:
+                      Control: Label@2.5.1
+                      Properties:
+                        Align: =Align.Center
+                        BorderColor: =RGBA(0, 18, 107, 1)
+                        Color: =ColorValue("#003087")
+                        Font: =Font.'Segoe UI'
+                        FontWeight: =FontWeight.Bold
+                        Height: =Parent.Height
+                        Size: =18
+                        Text: |-
+                          =If(
+                              cmpSubCriteria.SelectedIndex = 0,
+                              "-",
+                              Text(cmpSubCriteria.Score, "0.0")
+                          )
+                        Width: =Parent.Width
+            - cntOpt3:
+                Control: GroupContainer@1.3.0
+                Variant: AutoLayout
+                Properties:
+                  BorderColor: =ColorValue("#003087")
+                  BorderThickness: =1
+                  Fill: |-
+                    =If(
+                        cmpSubCriteria.SelectedIndex = 3,
+                        ColorValue("#003087"),
+                        RGBA(0, 0, 0, 0)
+                    )
+                  Height: =lblOpt3.Height + 16
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  PaddingBottom: =8
+                  PaddingLeft: =8
+                  PaddingRight: =8
+                  PaddingTop: =8
+                  RadiusBottomLeft: =6
+                  RadiusBottomRight: =6
+                  RadiusTopLeft: =6
+                  RadiusTopRight: =6
+                  Visible: =cmpSubCriteria.OptionCount = 3
+                  Width: =Parent.Width - cntScore.Width - 8
+                  X: =1
+                  Y: =cntOpt2.Y + cntOpt2.Height + 4
+                Children:
+                  - lblOpt3:
+                      Control: Label@2.5.1
+                      Properties:
+                        AutoHeight: =true
+                        BorderColor: =RGBA(0, 18, 107, 1)
+                        Color: |-
+                          =If(
+                              cmpSubCriteria.SelectedIndex = 3,
+                              Color.White,
+                              ColorValue("#003087")
+                          )
+                        Font: =Font.'Segoe UI'
+                        LayoutMaxHeight: =0
+                        LayoutMaxWidth: =0
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        OnSelect: |-
+                          =If(
+                              cmpSubCriteria.Enable && cmpSubCriteria.OptionCount >= 3,
+                              cmpSubCriteria.OnSelectOption3()
+                          )
+                        PaddingBottom: =2
+                        PaddingLeft: =2
+                        PaddingRight: =2
+                        PaddingTop: =2
+                        Text: =cmpSubCriteria.Option3Text
+                        Visible: =cmpSubCriteria.OptionCount = 3
+                        Width: =Parent.Width - 32
+                        X: =16
+                        Y: =8
+            - cntOpt2:
+                Control: GroupContainer@1.3.0
+                Variant: AutoLayout
+                Properties:
+                  BorderColor: =ColorValue("#003087")
+                  BorderThickness: =1
+                  Fill: |-
+                    =If(
+                        cmpSubCriteria.SelectedIndex = 2,
+                        ColorValue("#003087"),
+                        RGBA(0, 0, 0, 0)
+                    )
+                  Height: =lblOpt2.Height + 16
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  PaddingBottom: =8
+                  PaddingLeft: =8
+                  PaddingRight: =8
+                  PaddingTop: =8
+                  RadiusBottomLeft: =6
+                  RadiusBottomRight: =6
+                  RadiusTopLeft: =6
+                  RadiusTopRight: =6
+                  Width: =Parent.Width - cntScore.Width - 8
+                  X: =1
+                  Y: =cntOpt1.Y + cntOpt1.Height + 4
+                Children:
+                  - lblOpt2:
+                      Control: Label@2.5.1
+                      Properties:
+                        AutoHeight: =true
+                        BorderColor: =RGBA(0, 18, 107, 1)
+                        Color: |-
+                          =If(
+                              cmpSubCriteria.SelectedIndex = 2,
+                              Color.White,
+                              ColorValue("#003087")
+                          )
+                        Font: =Font.'Segoe UI'
+                        LayoutMaxHeight: =0
+                        LayoutMaxWidth: =0
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        OnSelect: |-
+                          =If(
+                              cmpSubCriteria.Enable && cmpSubCriteria.OptionCount >= 2,
+                              cmpSubCriteria.OnSelectOption2()
+                          )
+                        PaddingBottom: =2
+                        PaddingLeft: =2
+                        PaddingRight: =2
+                        PaddingTop: =2
+                        Text: =cmpSubCriteria.Option2Text
+                        Width: =Parent.Width - 32
+                        X: =16
+                        Y: =8
+            - cntOpt1:
+                Control: GroupContainer@1.3.0
+                Variant: AutoLayout
+                Properties:
+                  BorderColor: =ColorValue("#003087")
+                  BorderThickness: =1
+                  Fill: |-
+                    =If(
+                        cmpSubCriteria.SelectedIndex = 1,
+                        ColorValue("#003087"),
+                        RGBA(0, 0, 0, 0)
+                    )
+                  Height: =lblOpt1.Height + 16
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  PaddingBottom: =8
+                  PaddingLeft: =8
+                  PaddingRight: =8
+                  PaddingTop: =8
+                  RadiusBottomLeft: =6
+                  RadiusBottomRight: =6
+                  RadiusTopLeft: =6
+                  RadiusTopRight: =6
+                  Width: =Parent.Width - cntScore.Width - 8
+                  X: =1
+                  Y: =lblCriteriaTitle.Y + lblCriteriaTitle.Height
+                Children:
+                  - lblOpt1:
+                      Control: Label@2.5.1
+                      Properties:
+                        AutoHeight: =true
+                        BorderColor: =RGBA(0, 18, 107, 1)
+                        Color: |-
+                          =If(
+                              cmpSubCriteria.SelectedIndex = 1,
+                              Color.White,
+                              ColorValue("#003087")
+                          )
+                        Font: =Font.'Segoe UI'
+                        OnSelect: |-
+                          =If(
+                              cmpSubCriteria.Enable && cmpSubCriteria.OptionCount >= 1,
+                              cmpSubCriteria.OnSelectOption1()
+                          )
+                        PaddingBottom: =2
+                        PaddingLeft: =2
+                        PaddingRight: =2
+                        PaddingTop: =2
+                        Text: =cmpSubCriteria.Option1Text
+                        Width: =Parent.Width - 32
+                        X: =40
+                        Y: =40
+            - lblCriteriaTitle:
+                Control: Label@2.5.1
+                Properties:
+                  AutoHeight: =true
+                  BorderColor: =RGBA(0, 18, 107, 1)
+                  Font: =Font.'Segoe UI'
+                  FontWeight: =FontWeight.Bold
+                  Height: =28
+                  Size: =18
+                  Text: |
+                    =cmpSubCriteria.TitleText
+                  Width: =Parent.Width
